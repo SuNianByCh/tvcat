@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/bg_header"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="@color/main_color" />
+
+
+        <ImageView
+            android:id="@+id/iv_header"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/tab_setting"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Android"
+            android:textColor="@android:color/white"
+            app:layout_constraintLeft_toLeftOf="@+id/bg_header"
+            app:layout_constraintRight_toRightOf="@+id/bg_header"
+            app:layout_constraintTop_toBottomOf="@+id/iv_header" />
+
+
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:text="ID:11233"
+            android:textColor="@android:color/white"
+            app:layout_constraintLeft_toLeftOf="@+id/bg_header"
+            app:layout_constraintRight_toRightOf="@+id/bg_header"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+        <TextView
+            android:id="@+id/tv_vip_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/tv_vip"
+            android:paddingBottom="3dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:text="android"
+            android:textColor="@android:color/white"
+            app:layout_constraintLeft_toLeftOf="@+id/bg_header"
+            app:layout_constraintRight_toRightOf="@+id/bg_header"
+            app:layout_constraintTop_toBottomOf="@+id/tv_id" />
+
+
+        <TextView
+            android:id="@+id/tv_history"
+            style="@style/frg_my_text"
+            android:drawableLeft="@mipmap/icon_history"
+            android:drawableRight="@mipmap/wq_next"
+            android:text="观看记录"
+            app:layout_constraintTop_toBottomOf="@+id/bg_header" />
+
+        <ImageView
+            style="@style/frg_my_iv"
+            app:layout_constraintBottom_toBottomOf="@id/tv_history"
+            app:layout_constraintRight_toRightOf="@id/tv_history"
+            app:layout_constraintTop_toTopOf="@id/tv_history" />
+
+
+        <TextView
+            android:id="@+id/tv_get_vip"
+            style="@style/frg_my_text"
+            android:drawableLeft="@mipmap/icon_vip"
+            android:text="领取VIP"
+            app:layout_constraintTop_toBottomOf="@+id/tv_history"
+            tools:layout_editor_absoluteX="22dp" />
+
+
+        <ImageView
+            style="@style/frg_my_iv"
+            app:layout_constraintBottom_toBottomOf="@id/tv_get_vip"
+            app:layout_constraintRight_toRightOf="@id/tv_get_vip"
+            app:layout_constraintTop_toTopOf="@id/tv_get_vip" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="55dp"
+            android:background="@color/line_color"
+            app:layout_constraintTop_toBottomOf="@+id/tv_history" />
+
+
+        <View
+            android:id="@+id/v_1"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/color_line"
+            app:layout_constraintTop_toBottomOf="@+id/tv_get_vip" />
+
+
+        <TextView
+            android:id="@+id/tv_online_service"
+            style="@style/frg_my_text"
+            android:drawableLeft="@mipmap/icon_kf"
+            android:singleLine="true"
+            android:text="在线客服（9:00 - 21:00 ）"
+            app:layout_constraintTop_toBottomOf="@+id/v_1" />
+
+
+        <ImageView
+            style="@style/frg_my_iv"
+            app:layout_constraintBottom_toBottomOf="@id/tv_online_service"
+            app:layout_constraintRight_toRightOf="@id/tv_online_service"
+            app:layout_constraintTop_toTopOf="@id/tv_online_service" />
+
+
+        <TextView
+            android:id="@+id/tv_about_us"
+            style="@style/frg_my_text"
+            android:drawableLeft="@mipmap/icon_aboutus"
+            android:singleLine="true"
+            android:text="关于我们"
+            app:layout_constraintTop_toBottomOf="@+id/tv_online_service" />
+
+
+        <ImageView
+            style="@style/frg_my_iv"
+            app:layout_constraintBottom_toBottomOf="@id/tv_about_us"
+            app:layout_constraintRight_toRightOf="@id/tv_about_us"
+            app:layout_constraintTop_toTopOf="@id/tv_about_us" />
+
+
+        <TextView
+            android:id="@+id/tv_question"
+            style="@style/frg_my_text"
+            android:drawableLeft="@mipmap/icon_faq"
+            android:singleLine="true"
+            android:text="常见问题"
+            app:layout_constraintTop_toBottomOf="@+id/tv_about_us" />
+
+
+        <ImageView
+            style="@style/frg_my_iv"
+            app:layout_constraintBottom_toBottomOf="@id/tv_question"
+            app:layout_constraintRight_toRightOf="@id/tv_question"
+            app:layout_constraintTop_toTopOf="@id/tv_question" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="55dp"
+            android:background="@color/line_color"
+            app:layout_constraintTop_toBottomOf="@+id/tv_online_service" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="55dp"
+            android:background="@color/line_color"
+            app:layout_constraintTop_toBottomOf="@+id/tv_about_us" />
+
+        <View
+            android:id="@+id/v_2"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/color_line"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question" />
+
+
+        <TextView
+            android:id="@+id/tv_update"
+            style="@style/frg_my_text"
+            android:drawableLeft="@mipmap/icon_aboutus"
+            android:singleLine="true"
+            android:text="检查更新"
+            app:layout_constraintTop_toBottomOf="@+id/v_2" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
+            android:text="1.00"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_update"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+        <ImageView
+            style="@style/frg_my_iv"
+            app:layout_constraintBottom_toBottomOf="@id/tv_update"
+            app:layout_constraintRight_toRightOf="@id/tv_update"
+            app:layout_constraintTop_toTopOf="@id/tv_update" />
+
+        <TextView
+            android:id="@+id/tv_clear"
+            style="@style/frg_my_text"
+            android:drawableLeft="@mipmap/icon_clean_cache"
+            android:singleLine="true"
+            android:text="清空缓存"
+            app:layout_constraintTop_toBottomOf="@+id/tv_update" />
+
+
+        <ImageView
+            style="@style/frg_my_iv"
+            app:layout_constraintBottom_toBottomOf="@id/tv_clear"
+            app:layout_constraintRight_toRightOf="@id/tv_clear"
+            app:layout_constraintTop_toTopOf="@id/tv_clear" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="55dp"
+            android:background="@color/line_color"
+            app:layout_constraintTop_toBottomOf="@+id/tv_update" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/color_line"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_clear" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</ScrollView>
