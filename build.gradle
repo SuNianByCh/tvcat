@@ -1,24 +1,44 @@
+apply from: "config.gradle"
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+
     repositories {
+        //  mavenCentral()
         google()
         jcenter()
+        maven { url 'https://maven.google.com' }
+        maven { url "https://jitpack.io" }
+        //huaWei
+        //  maven { url 'http://developer.huawei.com/repo/' }
+        //  maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
-        
-
+        // classpath 'me.tatarka:gradle-retrolambda:3.7.0'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:8.4.0'
+        classpath "com.tencent.bugly:tinker-support:1.1.1"
+        // classpath "com.alibaba:arouter-register:1.0.0"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+    gradle.taskGraph.whenReady {
+        tasks.each { task ->
+            if (task.name.contains("Test")) {
+                task.enabled = false
+            }
+        }
+    }
+
 }
 
 allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://maven.google.com' }
+        maven { url "https://jitpack.io" }
     }
 }
 
