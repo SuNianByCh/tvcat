@@ -33,9 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingRight="15dp"
-                    android:drawableRight="@mipmap/icon_history"/>
-
-                -->
+                    android:drawableRight="@mipmap/icon_history"/>                -->
 
 
     </style>
