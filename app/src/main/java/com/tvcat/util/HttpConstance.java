@@ -1,8 +1,9 @@
 package com.tvcat.util;
 
 public class HttpConstance {
-    public final static String HOST_ADDRESS = "http://tvcat.small-best.com/api/";
-    public final static String HTTP_register = HOST_ADDRESS + "v1/account/create";
+  //  public final static String HOST_ADDRESS = "http://tvcat.small-best.com/api/";
+    public final static String HOST_ADDRESS = "http://m.tvcat.co/api/";
+    public final static String HTTP_REGISTER = HOST_ADDRESS + "v1/account/create";
     public final static String HTTP_BANNER = HOST_ADDRESS + "v1/banners";
     public final static String HTTP_MEDIA = HOST_ADDRESS + "v1/media/providers?";
     public static final String HTTP_CONFIG = HOST_ADDRESS + "v1/app/config";

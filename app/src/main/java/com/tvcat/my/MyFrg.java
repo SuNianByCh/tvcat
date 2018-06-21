@@ -3,15 +3,10 @@ package com.tvcat.my;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sunian.baselib.baselib.RxFragment;
 import com.tvcat.App;
 import com.tvcat.DialogUpdate;
 import com.tvcat.ILauncherView;
@@ -25,10 +20,8 @@ import com.tvcat.util.DownLoadService;
 import com.tvcat.util.TipUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
-public class MyFrg extends Fragment implements IMyView {
+public class MyFrg extends RxFragment<MyFrgPresenter,Object> implements IMyView<Object> {
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_vip_left)
@@ -52,40 +45,35 @@ public class MyFrg extends Fragment implements IMyView {
     @BindView(R.id.tv_id)
     TextView tvId;
 
-    Unbinder unbinder;
-    private MyFrgPresenter myFrgPresenter;
     private LancherPresenter lancherPresenter;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frg_my, null, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
+    protected int getLayout() {
+        return R.layout.frg_my;
     }
 
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
+    @Override
+    protected void adjustView(Bundle savedInstanceState) {
+        super.adjustView(savedInstanceState);
         BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
         if (myDevice != null) {
             String deviceName = myDevice.getName();
             tvName.setText(deviceName);
         }
-
-
-        myFrgPresenter = new MyFrgPresenter(this);
-        myFrgPresenter.getMyInfos();
-
-        iniclick();
-
+        mPresenter.getMyInfos();
     }
 
-    private void iniclick() {
+    @Override
+    protected void initPresenter() {
+        mPresenter = new MyFrgPresenter();
+    }
 
 
+    @Override
+    protected void initListener() {
+        super.initListener();
         tvVipLeft.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), VIPChargeActivity.class));
         });
@@ -93,7 +81,7 @@ public class MyFrg extends Fragment implements IMyView {
         tvGetVip.setOnClickListener(v -> startActivity(new Intent(getContext(), VIPHistoryActivity.class)));
 
         tvHistory.setOnClickListener(v -> startActivity(new Intent(getContext(), LookHistoryAcitvity.class)));
-        tvUpdate.setOnClickListener(v -> myFrgPresenter.checkUpdate());
+        tvUpdate.setOnClickListener(v -> mPresenter.checkUpdate(true));
         tvVersion.setText(DeviceUtil.getVersionName());
 
         tvAboutUs.setOnClickListener(v -> {
@@ -118,33 +106,16 @@ public class MyFrg extends Fragment implements IMyView {
 
     }
 
-    @Override
-    public void onDestroyView() {
-        if (myFrgPresenter != null)
-            myFrgPresenter.unSubscribe();
 
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     public void resultInfos(MyInfos myInfos) {
         tvVipLeft.setText(myInfos.getLeft_days());
-
         tvId.setText("ID:" + myInfos.getId());
 
-
     }
 
-    @Override
-    public void getMyInfosFailed(String url) {
-        Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public void noInterNet() {
-        Toast.makeText(getContext(), TipUtil.NO_NET, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void update(UpdateBean updateBean) {

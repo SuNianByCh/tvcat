@@ -1,40 +1,24 @@
 package com.tvcat;
 
 
-import android.Manifest;
 import android.content.res.ColorStateList;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.sunian.baselib.baselib.RxActivity;
 import com.tvcat.discover.DiscoverFrg;
 import com.tvcat.homepage.HomPageFrg;
-import com.tvcat.homepage.HomePresenter;
 import com.tvcat.my.MyFrg;
 import com.tvcat.util.ActivityManager;
-import com.tvcat.util.DeviceUtil;
-import com.tvcat.util.DialogTip;
-import com.tvcat.util.MD5Util;
 
-import java.util.HashMap;
-
-import okhttp3.FormBody;
-
-public class MainActivity extends AppCompatActivity {
-    private String UUID = null;
+public class MainActivity extends RxActivity {
     private BottomNavigationView bottomNavigationView;
-
     private final String homePage = "hompage";
     private final String discover = "discover";
     private final String my = "my";
@@ -42,10 +26,15 @@ public class MainActivity extends AppCompatActivity {
     private long mTime;
 
 
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int getLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initEventAndData() {
         ActivityManager.fullScreen(this);
         starSinkBar(getResources().getColor(R.color.main_color));
 
@@ -69,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.home_page);
         changFrg(homePage);
 
-
-        initListener();
     }
+
+
 
 
     /**
@@ -116,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void initListener() {
+    @Override
+    protected void initListener() {
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
@@ -139,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
     }
+
 
 
     public void changFrg(String cur) {

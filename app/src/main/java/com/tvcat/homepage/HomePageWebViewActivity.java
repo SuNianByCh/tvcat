@@ -85,12 +85,8 @@ public class HomePageWebViewActivity extends AppCompatActivity {
         starSinkBar(ContextCompat.getColor(getApplicationContext(), R.color.main_color));
 
         ivBack.setOnClickListener(v -> {
-           /* if (wv.canGoBack()) {
-                wv.goBack();
-            } else */
             finish();
         });
-
 
 
         findViewById(R.id.bt_fullScreen).setOnClickListener(v -> {
@@ -304,7 +300,7 @@ public class HomePageWebViewActivity extends AppCompatActivity {
                             JSONObject data = jsonObject
                                     .getJSONObject("data");
                             Log.e("-------", data + "****");
-                            if ("h5mp4".equals(data.getString("type") + "")|| "h5mp4".equals(data.getString("type") + "")) {
+                            if ("h5mp4".equals(data.getString("type") + "") || "h5mp4".equals(data.getString("type") + "")) {
                                 Intent intent = new Intent(HomePageWebViewActivity.this, PlayVideoActivity.class);
                                 intent.putExtra("videopath", data.getString("url"));
                                 intent.putExtra("recodURL", url);

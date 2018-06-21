@@ -1,11 +1,11 @@
 package com.tvcat.my;
 
-import com.tvcat.IUpdate;
+import com.tvcat.IUpdateView;
 import com.tvcat.beans.MyInfos;
 
-public interface IMyView extends IUpdate{
+public interface IMyView<T> extends IUpdateView<T> {
     void resultInfos(MyInfos myInfos);
-    void getMyInfosFailed(String url);
-    void noInterNet();
+
+
 
 }

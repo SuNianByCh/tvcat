@@ -1,20 +1,12 @@
 package com.tvcat.homepage;
 
-import com.tvcat.IUpdate;
+import com.tvcat.IUpdateView;
 import com.tvcat.beans.BannerBean;
 import com.tvcat.beans.HomeBean;
-import com.tvcat.beans.RegisterBean;
 
-import java.util.HashMap;
 import java.util.List;
 
-public interface HomPageView extends IUpdate {
-
-
-    void failReg(String result);
-
-    void failGetBanner(String reason);
-    void noInternet();
+public interface IHomPageView<T> extends IUpdateView<T> {
 
     void resultHomeBeanList(List<HomeBean> homeBeanList);
     void resultBannerList(List<BannerBean> bannerBeanList);

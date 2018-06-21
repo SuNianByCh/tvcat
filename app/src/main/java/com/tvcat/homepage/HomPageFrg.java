@@ -5,19 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.sunian.baselib.baselib.RxFragment;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tvcat.App;
 import com.tvcat.DialogUpdate;
@@ -29,63 +24,68 @@ import com.tvcat.my.MyWebViewActiviy;
 import com.tvcat.util.DeviceUtil;
 import com.tvcat.util.DownLoadService;
 import com.tvcat.util.MD5Util;
-import com.tvcat.util.TipUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 import okhttp3.FormBody;
 
-public class HomPageFrg extends Fragment implements HomPageView {
+public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHomPageView<Object> {
 
-    private HomePresenter presenter;
-    private SmartRefreshLayout mSfl;
-    private RecyclerView mRv;
+    @BindView(R.id.rv)
+    protected RecyclerView mRv;
     private String UUID;
-    private HomePresenter homePresenter;
-    private Banner mBanner;
+
+    @BindView(R.id.banner)
+    protected Banner mBanner;
     private HomeAdapter adapter;
 
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void initPresenter() {
 
-
-        View view = inflater.inflate(R.layout.frg_homepage, null, false);
-
-
-        return view;
+        mPresenter = new HomePresenter();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected int getLayout() {
+        return R.layout.frg_homepage;
+    }
 
-        initView(view);
-        homePresenter = new HomePresenter(this);
+
+
+
+
+    @Override
+    protected void initRefresh() {
+        super.initRefresh();
+        mSrl =  mView.findViewById(R.id.sml);
+    }
+
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        mSrl.setOnRefreshListener(refreshLayout -> {
+            register();
+        });
         initUIID();
-
-
     }
 
-    private void initView(View view) {
-        mSfl = view.findViewById(R.id.sml);
-        mSfl.setEnableLoadMore(false);
-        mRv = view.findViewById(R.id.rv);
-        mSfl.setEnableOverScrollDrag(true);
+
+    @Override
+    protected void adjustView(Bundle savedInstanceState) {
+        super.adjustView(savedInstanceState);
+        mSrl.setEnableLoadMore(false);
+        mSrl.setEnableOverScrollDrag(true);
         mRv.setLayoutManager(new GridLayoutManager(getContext(), 4));
         adapter = new HomeAdapter(getContext(), null);
         mRv.setAdapter(adapter);
 
-
-        mBanner = view.findViewById(R.id.banner);
-        mSfl.setOnRefreshListener(refreshLayout -> {
-            register();
-        });
 
 
         int widthPixels = getResources().getDisplayMetrics().widthPixels;
@@ -98,57 +98,26 @@ public class HomPageFrg extends Fragment implements HomPageView {
         mBanner.setLayoutParams(layoutParams);
         mBanner.setDelayTime(3000);
 
-
         adapter.setClickBack((postion, homeBean) -> startWebAcitvity(homeBean.getName(), homeBean.getUrl(), homeBean.getId() + ""));
-
     }
 
 
-    @Override
-    public void failReg(String result) {
-        Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
-        mSfl.finishRefresh(false);
-
-    }
-
-    @Override
-    public void failGetBanner(String reason) {
-        Toast.makeText(getContext(), reason, Toast.LENGTH_SHORT).show();
-        mSfl.finishRefresh(false);
-
-
-    }
-
-    @Override
-    public void noInternet() {
-        Toast.makeText(getContext(), TipUtil.NO_NET, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void resultHomeBeanList(List<HomeBean> homeBeanList) {
-
-        mSfl.finishRefresh(true);
-
         if (homeBeanList == null || homeBeanList.isEmpty())
             return;
-
         adapter.clearAndRefresh(homeBeanList);
 
     }
 
     @Override
     public void resultBannerList(List<BannerBean> bannerBeanList) {
-
-        bannerBeanList.toString();
-        mSfl.finishRefresh(true);
         if (bannerBeanList == null || bannerBeanList.isEmpty())
             return;
 
-
         mBanner.stopAutoPlay();
-
         mBanner.setImages(bannerBeanList);
-
         mBanner.setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
@@ -177,16 +146,19 @@ public class HomPageFrg extends Fragment implements HomPageView {
 
     }
 
+    @Override
+    protected void onUserInvisible(boolean isFirstInvisible) {
+        super.onUserInvisible(isFirstInvisible);
+        mBanner.stopAutoPlay();
+    }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if(hidden){
-            mBanner.stopAutoPlay();
-        }else {
+    protected void onUserVisible(boolean isFirstVisible) {
+        super.onUserVisible(isFirstVisible);
+        if(!isFirstVisible)
             mBanner.startAutoPlay();
-        }
     }
+
 
 
     @Override
@@ -203,7 +175,6 @@ public class HomPageFrg extends Fragment implements HomPageView {
     }
 
     void register() {
-
         if (UUID == null)
             UUID = DeviceUtil.getUUID(getContext());
         String apki = MD5Util.getMD5("c6c8fd23676b4f039330e9107285ab59");
@@ -224,11 +195,10 @@ public class HomPageFrg extends Fragment implements HomPageView {
         map.put("osv", Build.VERSION.SDK_INT + "");
 
 
-        homePresenter.httpRegister(map);
+        mPresenter.httpRegister(map);
 
 
     }
-
 
     private void initUIID() {
 
@@ -243,23 +213,18 @@ public class HomPageFrg extends Fragment implements HomPageView {
                         }
 
 
-                        mSfl.autoRefresh();
+                        mSrl.autoRefresh();
                     });
 
         } else {
             UUID = DeviceUtil.getDeviceId(getContext());
-            mSfl.autoRefresh();
+            mSrl.autoRefresh();
         }
 
 
     }
 
-    @Override
-    public void onDestroy() {
-        if (homePresenter != null)
-            homePresenter.unSubscribe();
-        super.onDestroy();
-    }
+
 
 
     private void startWebAcitvity(String title, String url, String mpID) {

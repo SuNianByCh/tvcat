@@ -148,7 +148,7 @@ public class HttpImp implements IHttp {
      */
     private String dealWithResponse(Response<String> response, Map<String, String> map, boolean isCache, boolean isCheckReturn) throws Exception {
         int code = response.code();
-        if (code == 200) {//请求成功
+        if (code == 200 || code == 201) {//请求成功
             /*
             *
             * {"statusCode":1,"data":"{\"username\":\"zsjr_13745\",\"uid\":\"13745\",\"exp\":1525938774,\"token\":\"e753b358052ee62195ea956dec5d3792\"}"}
@@ -180,8 +180,8 @@ public class HttpImp implements IHttp {
             } else {//返回数据正常
                 try {
                     JSONObject jsonObject = new JSONObject(body);
-                    code = jsonObject.getInt("statusCode");
-                    if (code == 1) {
+                    code = jsonObject.getInt("code");
+                    if (code == 0) {
                         String data = jsonObject.getString("data");
                         if (isCache) {
                             if (map == null)
@@ -195,8 +195,8 @@ public class HttpImp implements IHttp {
                         //
                         HttpException httpException = new HttpException();
                         httpException.code = code;
-                        if (jsonObject.has("msg") && !StringUtil.isNull(jsonObject.getString("msg"))) {
-                            httpException.msg = jsonObject.getString("msg");
+                        if (jsonObject.has("message") && !StringUtil.isNull(jsonObject.getString("message"))) {
+                            httpException.msg = jsonObject.getString("message");
                         } else {
                             httpException.msg = "系统出错啦";
                         }

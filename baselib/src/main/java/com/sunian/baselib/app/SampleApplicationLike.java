@@ -10,10 +10,9 @@ import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.squareup.leakcanary.LeakCanary;
-import com.tencent.bugly.Bugly;
+import com.sunian.baselib.BuildConfig;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
-import com.sunian.baselib.BuildConfig;
 
 public class SampleApplicationLike extends DefaultApplicationLike {
 
@@ -30,7 +29,7 @@ public class SampleApplicationLike extends DefaultApplicationLike {
         super.onCreate();
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-        Bugly.init(getApplication(), "9f891e01f0", false);
+    //    Bugly.init(getApplication(), "9f891e01f0", false);
         DataManger.init(getApplication());
         // 置入一个不设防的VmPolicy（不设置的话 7.0以上一调用拍照功能就崩溃了）
         // 还有一种方式：manifest中加入provider然后修改intent代码
