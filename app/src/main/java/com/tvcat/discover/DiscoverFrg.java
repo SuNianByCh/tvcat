@@ -1,34 +1,22 @@
 package com.tvcat.discover;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.sunian.baselib.baselib.ComePresenter;
 import com.sunian.baselib.baselib.RxFragment;
 import com.tvcat.App;
-import com.tvcat.ILauncherView;
-import com.tvcat.LancherPresenter;
 import com.tvcat.R;
 import com.tvcat.beans.ConfigBean;
 import com.tvcat.util.HttpConstance;
-import com.tvcat.util.TipUtil;
 import com.tvcat.util.WebViewUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class DiscoverFrg extends RxFragment<ComePresenter, ConfigBean> {
     @BindView(R.id.pb)

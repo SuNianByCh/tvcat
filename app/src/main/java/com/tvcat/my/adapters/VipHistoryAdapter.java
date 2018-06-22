@@ -1,4 +1,4 @@
-package com.tvcat.my;
+package com.tvcat.my.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

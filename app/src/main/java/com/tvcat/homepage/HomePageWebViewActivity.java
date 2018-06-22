@@ -28,7 +28,7 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.tvcat.R;
-import com.tvcat.my.VIPChargeActivity;
+import com.tvcat.my.views.VIPChargeActivity;
 import com.tvcat.util.ActivityManager;
 import com.tvcat.util.DialogTip;
 import com.tvcat.util.HttpConstance;

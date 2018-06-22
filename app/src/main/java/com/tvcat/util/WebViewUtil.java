@@ -23,7 +23,7 @@ public class WebViewUtil {
         wv.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         wv.getSettings().setLoadWithOverviewMode(true);
 
-
+        wv = null;
     }
     public void setWebView(com.tencent.smtt.sdk.WebView wv){
         wv.getSettings().setJavaScriptEnabled(true);
@@ -38,6 +38,7 @@ public class WebViewUtil {
 // 自适应屏幕
         wv.getSettings().setLayoutAlgorithm(com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         wv.getSettings().setLoadWithOverviewMode(true);
+        wv = null;
 
     }
 }

@@ -1,8 +1,9 @@
-package com.tvcat.my;
+package com.tvcat.my.adapters;
 
-import com.tvcat.LancherPresenter;
+import com.tvcat.LuncherPresenter;
 import com.tvcat.UpdatePresenter;
 import com.tvcat.beans.MyInfos;
+import com.tvcat.my.presenter.IMyView;
 import com.tvcat.util.HttpConstance;
 import com.tvcat.util.RegisterBeanHelper;
 
@@ -10,11 +11,11 @@ import io.reactivex.disposables.Disposable;
 
 public class MyFrgPresenter extends UpdatePresenter<IMyView> {
 
-    private final LancherPresenter lancherPresenter;
+    private final LuncherPresenter lancherPresenter;
 
     public MyFrgPresenter() {
         super();
-        lancherPresenter = new LancherPresenter();
+        lancherPresenter = new LuncherPresenter();
         lancherPresenter.getConfig();
     }
 

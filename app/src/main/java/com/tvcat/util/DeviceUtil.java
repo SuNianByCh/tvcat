@@ -1,16 +1,11 @@
 package com.tvcat.util;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 
 import com.tvcat.App;
 
@@ -31,7 +26,7 @@ public class DeviceUtil {
             if (!isEmpty(imei)) {
                 deviceId.append("imei");
                 deviceId.append(imei);
-                LogUtil.e("getDeviceId : ", deviceId.toString());
+              //  LogUtil.e("getDeviceId : ", deviceId.toString());
                 return deviceId.toString();
             }
             //序列号（sn）
@@ -39,7 +34,7 @@ public class DeviceUtil {
             if (!isEmpty(sn)) {
                 deviceId.append("sn");
                 deviceId.append(sn);
-                LogUtil.e("getDeviceId : ", deviceId.toString());
+             //   LogUtil.e("getDeviceId : ", deviceId.toString());
                 return deviceId.toString();
             }
             //如果上面都没有， 则生成一个id：随机码
@@ -47,14 +42,14 @@ public class DeviceUtil {
             if (!isEmpty(uuid)) {
                 deviceId.append("id");
                 deviceId.append(uuid);
-                LogUtil.e("getDeviceId : ", deviceId.toString());
+            //    LogUtil.e("getDeviceId : ", deviceId.toString());
                 return deviceId.toString();
             }
         } catch (Exception e) {
             e.printStackTrace();
             deviceId.append("id").append(getUUID(context));
         }
-        LogUtil.e("getDeviceId : ", deviceId.toString());
+      //  LogUtil.e("getDeviceId : ", deviceId.toString());
         return deviceId.toString();
     }
 

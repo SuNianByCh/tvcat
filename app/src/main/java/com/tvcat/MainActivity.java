@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.sunian.baselib.baselib.RxActivity;
 import com.tvcat.discover.DiscoverFrg;
 import com.tvcat.homepage.HomPageFrg;
-import com.tvcat.my.MyFrg;
+import com.tvcat.my.views.MyFrg;
 import com.tvcat.util.ActivityManager;
 
 public class MainActivity extends RxActivity {

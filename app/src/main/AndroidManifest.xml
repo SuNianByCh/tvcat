@@ -35,10 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".my.VIPChargeActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".my.LookHistoryAcitvity" android:screenOrientation="portrait"/>
-        <activity android:name=".my.VIPHistoryActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".my.MyWebViewActiviy" android:screenOrientation="portrait"/>
+        <activity android:name=".my.views.VIPChargeActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".my.views.LookHistoryAcitvity" android:screenOrientation="portrait"/>
+        <activity android:name=".my.views.VIPHistoryActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".my.views.MyWebViewActiviy" android:screenOrientation="portrait" android:launchMode="singleTask"/>
         <service android:name=".util.DownLoadService"/>
         <provider android:name="android.support.v4.content.FileProvider" android:authorities="com.tvcat.provider" android:exported="false" android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/path_file"/>

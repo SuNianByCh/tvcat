@@ -2,6 +2,7 @@ package com.sunian.baselib.baselib;
 
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.sunian.baselib.util.ToastUtil;
 
 /**
@@ -13,9 +14,12 @@ public abstract class RxActivity<T extends RxPresenter, JB> extends BaseActivity
 
     protected T mPresenter;
 
+    protected SmartRefreshLayout mSrl;
+
     @Override
     protected void onViewCreated() {
         super.onViewCreated();
+        initRefresh();
         initPresenter();
         if (mPresenter != null)
             mPresenter.attachView(this);
@@ -23,6 +27,13 @@ public abstract class RxActivity<T extends RxPresenter, JB> extends BaseActivity
 
     }
 
+
+    /**
+     * 初始化刷新控件
+     */
+    protected void initRefresh() {
+
+    }
     /**
      * 初始化控制器
      */
@@ -33,6 +44,10 @@ public abstract class RxActivity<T extends RxPresenter, JB> extends BaseActivity
 
     @Override
     protected void onDestroy() {
+        if (mSrl != null) {
+            mSrl.finishRefresh(0);
+            mSrl.finishLoadMore(0);
+        }
         if (mPresenter != null)
             mPresenter.detachView();
         super.onDestroy();
@@ -57,7 +72,10 @@ public abstract class RxActivity<T extends RxPresenter, JB> extends BaseActivity
 
     @Override
     public void stateMain(int type) {
-
+        if (mSrl != null) {
+            mSrl.finishRefresh();
+            mSrl.finishLoadMore();
+        }
     }
 
     @Override

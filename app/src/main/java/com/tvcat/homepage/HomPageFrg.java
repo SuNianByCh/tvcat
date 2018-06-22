@@ -20,7 +20,7 @@ import com.tvcat.R;
 import com.tvcat.beans.BannerBean;
 import com.tvcat.beans.HomeBean;
 import com.tvcat.beans.UpdateBean;
-import com.tvcat.my.MyWebViewActiviy;
+import com.tvcat.my.views.MyWebViewActiviy;
 import com.tvcat.util.DeviceUtil;
 import com.tvcat.util.DownLoadService;
 import com.tvcat.util.MD5Util;

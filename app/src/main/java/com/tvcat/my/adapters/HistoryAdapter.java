@@ -1,4 +1,4 @@
-package com.tvcat.my;
+package com.tvcat.my.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

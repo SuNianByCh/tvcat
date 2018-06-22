@@ -1,13 +1,8 @@
-package com.tvcat.my;
+package com.tvcat.my.views;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,7 +10,6 @@ import android.widget.TextView;
 import com.sunian.baselib.baselib.RxActivity;
 import com.sunian.baselib.util.StatusBarUtil;
 import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.tvcat.App;
@@ -23,7 +17,6 @@ import com.tvcat.R;
 import com.tvcat.util.WebViewUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MyWebViewActiviy extends RxActivity {
     public final static int type_about_us = 1;

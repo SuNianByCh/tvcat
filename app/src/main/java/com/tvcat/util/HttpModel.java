@@ -2,16 +2,9 @@ package com.tvcat.util;
 
 import android.content.Context;
 
-
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -59,15 +52,7 @@ public class HttpModel {
         Retrofit.Builder builder = new Retrofit.Builder();
         return builder;
     }
-/*
-    public static Retrofit createRetrofitJson(Context context, String url) {
-        return getRetrofitBuilder()
-                .baseUrl(url)
-                .client(getOkHttpClient(context))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }*/
+
 
     private static Retrofit createRetrofitString() {
         return getRetrofitBuilder().baseUrl(HttpConstance.HOST_ADDRESS)

@@ -1,32 +1,21 @@
 package com.tvcat;
 
 import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.sunian.baselib.baselib.RxActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tvcat.beans.ConfigBean;
 import com.tvcat.util.CountUtil;
-import com.tvcat.util.TipUtil;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.functions.Consumer;
-
-public class LancherActivity extends RxActivity<LancherPresenter, Object> implements ILauncherView<Object> {
+public class LancherActivity extends RxActivity<LuncherPresenter, Object> implements ILauncherView<Object> {
 
     private CountUtil countUtil;
 
@@ -55,7 +44,7 @@ public class LancherActivity extends RxActivity<LancherPresenter, Object> implem
     @Override
     protected void initPresenter() {
         super.initPresenter();
-        mPresenter = new LancherPresenter();
+        mPresenter = new LuncherPresenter();
     }
 
     @Override
