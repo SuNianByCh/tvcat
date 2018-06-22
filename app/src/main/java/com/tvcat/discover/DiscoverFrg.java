@@ -15,54 +15,49 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.sunian.baselib.baselib.ComePresenter;
+import com.sunian.baselib.baselib.RxFragment;
 import com.tvcat.App;
 import com.tvcat.ILauncherView;
 import com.tvcat.LancherPresenter;
 import com.tvcat.R;
 import com.tvcat.beans.ConfigBean;
+import com.tvcat.util.HttpConstance;
 import com.tvcat.util.TipUtil;
+import com.tvcat.util.WebViewUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DiscoverFrg extends Fragment {
+public class DiscoverFrg extends RxFragment<ComePresenter, ConfigBean> {
     @BindView(R.id.pb)
     ProgressBar pb;
     @BindView(R.id.wv)
     WebView wv;
     @BindView(R.id.iv_back)
     ImageView ivBack;
-    Unbinder unbinder;
-    private LancherPresenter lancherPresenter;
 
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frg_dis, null, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-
+    protected void initPresenter() {
+        mPresenter = new ComePresenter();
     }
 
+    @Override
+    protected int getLayout() {
+        return R.layout.frg_dis;
+    }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void adjustView(Bundle savedInstanceState) {
+        super.adjustView(savedInstanceState);
+        new WebViewUtil().setWebView(wv);
+    }
 
-
-        wv.getSettings().setJavaScriptEnabled(true);
-
-        wv.getSettings().setSavePassword(false);
-        wv.setVerticalScrollBarEnabled(false);
-        wv.setHorizontalScrollBarEnabled(false);
-// 设置可以支持缩放
-        wv.getSettings().setSupportZoom(true);
-// 扩大比例的缩放
-        wv.getSettings().setUseWideViewPort(true);
-// 自适应屏幕
-        wv.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        wv.getSettings().setLoadWithOverviewMode(true);
+    @Override
+    protected void initListener() {
+        super.initListener();
 
         wv.setWebViewClient(new WebViewClient() {
             @Override
@@ -86,27 +81,11 @@ public class DiscoverFrg extends Fragment {
             }
         });
 
+
+        mPresenter.httpGetObject(HttpConstance.HTTP_CONFIG, null, ConfigBean.class, true);
+
         if (App.getConfigBean() == null) {
-            lancherPresenter = new LancherPresenter(new ILauncherView() {
-                @Override
-                public void noInterNet() {
-                    Toast.makeText(getContext(), TipUtil.NO_NET, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void getConfigFailed(String reason) {
-                    if (reason == null)
-                        return;
-                    Toast.makeText(getContext(), reason, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void resultConfig(ConfigBean configBean) {
-                    App.setConfigBean(configBean);
-                    loadUrl();
-                }
-            });
-            lancherPresenter.getConfig();
+            mPresenter.httpGetObject(HttpConstance.HTTP_CONFIG, null, ConfigBean.class, true);
         } else {
             loadUrl();
         }
@@ -118,15 +97,11 @@ public class DiscoverFrg extends Fragment {
                 wv.goBack();
         });
 
-
     }
-
 
     void loadUrl() {
-
         wv.loadUrl(App.getConfigBean().getExplore_url());
     }
-
 
     public boolean backPress() {
         boolean back = false;
@@ -135,7 +110,6 @@ public class DiscoverFrg extends Fragment {
             back = true;
             wv.goBack();
         }
-
 
         return back;
 
@@ -147,6 +121,14 @@ public class DiscoverFrg extends Fragment {
         super.onPause();
         wv.onPause();
         wv.pauseTimers();
+    }
+
+
+    @Override
+    public void resultDate(ConfigBean data, int type) {
+        super.resultDate(data, type);
+        App.setConfigBean(data);
+        loadUrl();
     }
 
     @Override
@@ -161,10 +143,7 @@ public class DiscoverFrg extends Fragment {
 
         if (wv != null)
             wv.destroy();
-
-
         super.onDestroyView();
-        unbinder.unbind();
     }
 
 

@@ -21,7 +21,7 @@ import com.tvcat.util.TipUtil;
 
 import butterknife.BindView;
 
-public class MyFrg extends RxFragment<MyFrgPresenter,Object> implements IMyView<Object> {
+public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView<Object> {
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_vip_left)
@@ -45,7 +45,7 @@ public class MyFrg extends RxFragment<MyFrgPresenter,Object> implements IMyView<
     @BindView(R.id.tv_id)
     TextView tvId;
 
-    private LancherPresenter lancherPresenter;
+    private int type;
 
     @Override
     protected int getLayout() {
@@ -91,7 +91,8 @@ public class MyFrg extends RxFragment<MyFrgPresenter,Object> implements IMyView<
         });
 
         tvQuestion.setOnClickListener(v -> {
-            startMyWeb(MyWebViewActiviy.type_common_question);
+            type = MyWebViewActiviy.type_common_question;
+            startMyWeb(type);
         });
 
         tvOnlineService.setOnClickListener(v -> {
@@ -107,14 +108,12 @@ public class MyFrg extends RxFragment<MyFrgPresenter,Object> implements IMyView<
     }
 
 
-
     @Override
     public void resultInfos(MyInfos myInfos) {
         tvVipLeft.setText(myInfos.getLeft_days());
         tvId.setText("ID:" + myInfos.getId());
 
     }
-
 
 
     @Override
@@ -159,27 +158,7 @@ public class MyFrg extends RxFragment<MyFrgPresenter,Object> implements IMyView<
 
     public void startMyWeb(int type) {
         if (App.getConfigBean() == null) {
-            if (lancherPresenter == null)
-                lancherPresenter = new LancherPresenter(new ILauncherView() {
-                    @Override
-                    public void noInterNet() {
-                        Toast.makeText(getContext(), TipUtil.NO_NET, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void getConfigFailed(String reason) {
-                        if (reason == null)
-                            return;
-                        Toast.makeText(getContext(), reason, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void resultConfig(ConfigBean configBean) {
-                        App.setConfigBean(configBean);
-                        startMyWeb(type);
-                    }
-                });
-            lancherPresenter.getConfig();
+            mPresenter.getConfig();
         } else {
             Intent intent = new Intent(getContext(), MyWebViewActiviy.class);
             intent.putExtra("type", type);
@@ -188,10 +167,8 @@ public class MyFrg extends RxFragment<MyFrgPresenter,Object> implements IMyView<
     }
 
     @Override
-    public void onDestroy() {
-        if (lancherPresenter != null)
-            lancherPresenter.unSubscribe();
-        super.onDestroy();
-
+    public void resultConfig(ConfigBean configBean) {
+        App.setConfigBean(configBean);
+        startMyWeb(type);
     }
 }

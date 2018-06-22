@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.sunian.baselib.baselib.RxActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tvcat.beans.ConfigBean;
 import com.tvcat.util.CountUtil;
@@ -25,35 +26,50 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.functions.Consumer;
 
-public class LancherActivity extends AppCompatActivity implements ILauncherView {
+public class LancherActivity extends RxActivity<LancherPresenter, Object> implements ILauncherView<Object> {
 
     private CountUtil countUtil;
-    private LancherPresenter lancherPresenter;
+
     private boolean isCanStarMan = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE); // 隐藏应用程序的标题栏，即当前activity的label
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // 隐藏android系统的状态栏
-        setContentView(R.layout.lancher_activity);
+        super.onCreate(savedInstanceState);
 
 
-        lancherPresenter = new LancherPresenter(this);
-        lancherPresenter.getConfig();
+    }
+
+
+    @Override
+    public int getLayout() {
+        return R.layout.lancher_activity;
+    }
+
+    @Override
+    protected void initListener() {
+
+    }
+
+    @Override
+    protected void initPresenter() {
+        super.initPresenter();
+        mPresenter = new LancherPresenter();
+    }
+
+    @Override
+    protected void initEventAndData() {
         requestPermission();
 
-
+        mPresenter.getConfig();
     }
 
     @Override
     protected void onDestroy() {
 
-
         if (countUtil != null)
             countUtil.destroyAllCount();
-
-        lancherPresenter.unSubscribe();
 
         super.onDestroy();
     }
@@ -92,10 +108,11 @@ public class LancherActivity extends AppCompatActivity implements ILauncherView 
     }
 
     private void startMain() {
-        if(!isCanStarMan)
+        if (!isCanStarMan)
             return;
         isCanStarMan = false;
-        countUtil = new CountUtil();
+        if (countUtil == null)
+            countUtil = new CountUtil();
         countUtil.countBackMainThread(3, aLong -> {
             startActivity(new Intent(this, MainActivity.class));
             finish();
@@ -111,21 +128,9 @@ public class LancherActivity extends AppCompatActivity implements ILauncherView 
         requestPermission();
     }
 
-    @Override
-    public void noInterNet() {
-        Toast.makeText(this, TipUtil.NO_NET, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void getConfigFailed(String reason) {
-
-        if (reason == null)
-            return;
-        Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void resultConfig(ConfigBean configBean) {
-
+        App.setConfigBean(configBean);
     }
 }

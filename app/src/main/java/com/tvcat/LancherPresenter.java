@@ -1,6 +1,8 @@
 package com.tvcat;
 
 import com.google.gson.Gson;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.sunian.baselib.baselib.RxPresenter;
 import com.tvcat.beans.ConfigBean;
 import com.tvcat.util.ApiService;
 import com.tvcat.util.HttpConstance;
@@ -16,61 +18,27 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class LancherPresenter {
-    private CompositeDisposable mCompositeDisposable;
+public class LancherPresenter extends RxPresenter<ILauncherView> {
 
-    private ILauncherView launcherView;
 
-    public LancherPresenter(ILauncherView launcherView) {
-        this.launcherView = launcherView;
+    public LancherPresenter() {
+        super();
+
     }
-
 
     public void getConfig() {
-        if (!NetworkIsAvilableUtil.isNetworkAvailable(App.instance)) {
-            if (launcherView != null)
-                launcherView.noInterNet();
-            return;
+        if (hasNet(true, null)) {
+            Disposable subscribe = mDataManger.getHttp().httpGetObject(HttpConstance.HTTP_CONFIG, null, ConfigBean.class, true)
+                    .filter(p -> mView != null)
+                    .subscribe(configBean -> {
+                        mView.stateMain(0);
+                        mView.resultConfig(configBean);
+                    }, throwable -> handerException(throwable));
+            addSubscribe(subscribe);
         }
-        Disposable subscribe = HttpModel.getApiServer().getBackString(HttpConstance.HTTP_CONFIG)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> {
-
-                    JSONObject jsonObject = new JSONObject(s);
-                    if (jsonObject.getInt("code") == 0) {
-
-                        ConfigBean configBean = new Gson().fromJson(jsonObject.getString("data"), ConfigBean.class);
-                        App.setConfigBean(configBean);
-                        if (launcherView == null)
-                            launcherView.resultConfig(configBean);
-                    } else {
-                        if (launcherView != null) {
-                            launcherView.getConfigFailed(jsonObject.getString("message"));
-                        }
-                    }
-
-
-                }, throwable -> {
-                    if (launcherView != null)
-                        launcherView.getConfigFailed("访问服务器出错");
-                });
-        addSubscribe(subscribe);
     }
 
 
-    public void unSubscribe() {
 
-
-        launcherView = null;
-    }
-
-    protected void addSubscribe(Disposable subscription) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = new CompositeDisposable();
-        }
-        mCompositeDisposable.add(subscription);
-
-    }
 
 }
