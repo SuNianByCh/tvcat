@@ -1,5 +1,6 @@
 package com.tvcat.util;
 
+import android.os.Build;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -23,6 +24,9 @@ public class WebViewUtil {
         wv.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         wv.getSettings().setLoadWithOverviewMode(true);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            wv.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         wv = null;
     }
     public void setWebView(com.tencent.smtt.sdk.WebView wv){
@@ -35,9 +39,18 @@ public class WebViewUtil {
         wv.getSettings().setSupportZoom(true);
 // 扩大比例的缩放
         wv.getSettings().setUseWideViewPort(true);
+        wv.getSettings().setBuiltInZoomControls(true);
 // 自适应屏幕
         wv.getSettings().setLayoutAlgorithm(com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         wv.getSettings().setLoadWithOverviewMode(true);
+
+        wv.getSettings().setPluginState(com.tencent.smtt.sdk.WebSettings.PluginState.ON);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            wv.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         wv = null;
 
     }

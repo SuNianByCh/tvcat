@@ -48,6 +48,7 @@
             android:screenOrientation="landscape"/>
         <activity android:name=".videoplay.GiraffePlayerActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".my.views.VipChargeViewActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

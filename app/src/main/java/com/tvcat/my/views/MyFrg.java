@@ -62,6 +62,7 @@ public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView
             String deviceName = myDevice.getName();
             tvName.setText(deviceName);
         }
+        tvVersion.setText(DeviceUtil.getVersionName());
         mPresenter.getMyInfos();
     }
 
@@ -77,13 +78,15 @@ public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView
         tvVipLeft.setOnClickListener(v -> {
             if (FastClick.isFastClick())
                 return;
-            startActivity(new Intent(getContext(), VIPChargeActivity.class));
+           // startActivity(new Intent(getContext(), VIPChargeActivity.class));
+            startActivity(new Intent(mContext,VipChargeViewActivity.class));
         });
 
         tvGetVip.setOnClickListener(v -> {
             if (FastClick.isFastClick())
                 return;
-            startActivity(new Intent(getContext(), VIPHistoryActivity.class));
+         //   startActivity(new Intent(getContext(), VIPHistoryActivity.class));
+            startActivity(new Intent(mContext,VipChargeViewActivity.class));
         });
 
         tvHistory.setOnClickListener(v -> {
@@ -92,7 +95,7 @@ public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView
             startActivity(new Intent(getContext(), LookHistoryAcitvity.class));
         });
         tvUpdate.setOnClickListener(v -> mPresenter.checkUpdate(true));
-        tvVersion.setText(DeviceUtil.getVersionName());
+
 
         tvAboutUs.setOnClickListener(v -> {
             if (FastClick.isFastClick())

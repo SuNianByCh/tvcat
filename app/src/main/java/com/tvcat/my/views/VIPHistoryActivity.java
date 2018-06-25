@@ -36,7 +36,7 @@ import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
+@Deprecated
 public class VIPHistoryActivity extends AppCompatActivity {
     @BindView(R.id.iv_back)
     ImageView ivBack;

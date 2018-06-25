@@ -59,6 +59,8 @@ public class RxPresenter<T extends IBaseView> implements IBasePresenter<T> {
             return false;
         boolean networkAvailable = NetworkIsAvilableUtil.isNetworkAvailable(currentActivity.getApplication());
         if (networkAvailable) {
+            if (mView != null)
+                mView.stateLoading(null, 0);
             return true;
         } else if (isCallBack) {
             if (mView == null)
