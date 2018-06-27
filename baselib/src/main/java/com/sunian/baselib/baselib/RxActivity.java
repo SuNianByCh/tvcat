@@ -3,6 +3,7 @@ package com.sunian.baselib.baselib;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.sunian.baselib.customview.DialogTip;
 import com.sunian.baselib.util.ToastUtil;
 
 /**
@@ -15,6 +16,7 @@ public abstract class RxActivity<T extends RxPresenter, JB> extends BaseActivity
     protected T mPresenter;
 
     protected SmartRefreshLayout mSrl;
+    private DialogTip dialogTip;
 
     @Override
     protected void onViewCreated() {
@@ -34,6 +36,7 @@ public abstract class RxActivity<T extends RxPresenter, JB> extends BaseActivity
     protected void initRefresh() {
 
     }
+
     /**
      * 初始化控制器
      */
@@ -67,7 +70,7 @@ public abstract class RxActivity<T extends RxPresenter, JB> extends BaseActivity
 
     @Override
     public void stateLoading(String msg, int type) {
-
+        showTip(false);
     }
 
     @Override
@@ -76,6 +79,7 @@ public abstract class RxActivity<T extends RxPresenter, JB> extends BaseActivity
             mSrl.finishRefresh();
             mSrl.finishLoadMore();
         }
+        dismissTip();
     }
 
     @Override
@@ -102,5 +106,27 @@ public abstract class RxActivity<T extends RxPresenter, JB> extends BaseActivity
         if (colorResource == 0)
             return;
         tvTitle.setBackgroundResource(colorResource);
+    }
+
+    public void showTip(boolean isForce) {
+        if (dialogTip == null)
+            dialogTip = new DialogTip(mContext);
+        if (isForce || isShowTip()) {
+            if (!dialogTip.isShowing())
+                dialogTip.show();
+        }
+
+    }
+
+    protected void dismissTip() {
+        if (dialogTip == null)
+            return;
+        if (dialogTip.isShowing())
+            dialogTip.dismiss();
+
+    }
+
+    protected boolean isShowTip() {
+        return true;
     }
 }

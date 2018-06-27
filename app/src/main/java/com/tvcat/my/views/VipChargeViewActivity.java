@@ -75,6 +75,7 @@ public class VipChargeViewActivity extends RxActivity {
     protected void initEventAndData() {
         new WebViewUtil().setWebView(wv);
         StatusBarUtil.setColor(this, ContextCompat.getColor(mContext,R.color.main_color));
+        tvTitle.setText("VIP充值");
 
 
     }

@@ -16,6 +16,6 @@ public class HttpConstance {
     public static final String HTTP_UPDATE = HOST_ADDRESS + "v1/app/check_version";//版本更新
 
     public static final String HTTP_SAVE_PLAY_TIME =  HOST_ADDRESS + "v1/media/play/progress";//保存播放进度
-  public static final String HTTP_CHAGE_VIP = HOST_ADDRESS + "http://m.tvcat.co/api/v1/cards?uid=%s";
+  public static final String HTTP_CHAGE_VIP = "http://m.tvcat.co/cards?uid=%s";//VIP充值
 
 }

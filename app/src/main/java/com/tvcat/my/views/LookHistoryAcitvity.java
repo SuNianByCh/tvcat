@@ -136,6 +136,7 @@ public class LookHistoryAcitvity extends RxActivity<LookHistoryPresenter, Object
     public void showErrorMsg(String msg, int type) {
         if (type == 6008) {//冲值界面
 
+
         } else {
             super.showErrorMsg(msg, type);
         }
