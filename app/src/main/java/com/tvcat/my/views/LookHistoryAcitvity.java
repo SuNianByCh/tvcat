@@ -1,9 +1,11 @@
 package com.tvcat.my.views;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,9 +14,11 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.sunian.baselib.baselib.RxActivity;
 import com.sunian.baselib.util.FastClick;
 import com.sunian.baselib.util.StatusBarUtil;
+import com.sunian.baselib.util.StringUtil;
 import com.tvcat.R;
 import com.tvcat.beans.LookHistParseBean;
 import com.tvcat.beans.LookHistoryBean;
+import com.tvcat.homepage.VideoWebActivity;
 import com.tvcat.my.adapters.HistoryAdapter;
 import com.tvcat.my.presenter.ILookHistoryView;
 import com.tvcat.my.presenter.LookHistoryPresenter;
@@ -114,6 +118,17 @@ public class LookHistoryAcitvity extends RxActivity<LookHistoryPresenter, Object
 
     @Override
     public void parseLook(LookHistParseBean lookHistParseBean) {
+
+        if(lookHistParseBean == null)
+            return;
+        if(StringUtil.isNull(lookHistParseBean.getType()))
+            return;
+
+        if(TextUtils.equals(lookHistParseBean.getType(),"url")){
+            VideoWebActivity.start(mContext,lookHistParseBean.getUrl(),lookHistParseBean.getTitle());
+        }
+
+
       /*  if (jsonObject.getInt("code") == 0) {
             JSONObject data = jsonObject
                     .getJSONObject("data");
@@ -135,8 +150,8 @@ public class LookHistoryAcitvity extends RxActivity<LookHistoryPresenter, Object
     @Override
     public void showErrorMsg(String msg, int type) {
         if (type == 6008) {//冲值界面
-
-
+            Intent intent = new Intent(mContext, VipChargeViewActivity.class);
+            startActivity(intent);
         } else {
             super.showErrorMsg(msg, type);
         }

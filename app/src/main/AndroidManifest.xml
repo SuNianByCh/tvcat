@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
 
     <application
         android:name="com.sunian.baselib.app.BaseApp"
@@ -22,10 +26,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".homepage.HomePageWebViewActivity"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
-          />
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LancherActivity"
             android:screenOrientation="portrait">
@@ -35,20 +38,53 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".my.views.VIPChargeActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".my.views.LookHistoryAcitvity" android:screenOrientation="portrait"/>
-        <activity android:name=".my.views.VIPHistoryActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".my.views.MyWebViewActiviy" android:screenOrientation="portrait" android:launchMode="singleTask"/>
-        <service android:name=".util.DownLoadService"/>
-        <provider android:name="android.support.v4.content.FileProvider" android:authorities="com.tvcat.provider" android:exported="false" android:grantUriPermissions="true">
-            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/path_file"/>
-        </provider>
-        <activity android:name=".videoplay.PlayVideoActivity"
+        <activity
+            android:name=".my.views.VIPChargeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".my.views.LookHistoryAcitvity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".my.views.VIPHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".my.views.MyWebViewActiviy"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".videoplay.GiraffePlayerActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".my.views.VipChargeViewActivity" android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+
+        <service android:name=".util.DownLoadService" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.tvcat.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/path_file" />
+        </provider>
+
+        <activity
+            android:name=".videoplay.PlayVideoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".videoplay.GiraffePlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".my.views.VipChargeViewActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".homepage.VideoWebActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.tencent.smtt.sdk.VideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:alwaysRetainTaskState="true">
+            <intent-filter>
+                <action android:name="com.tencent.smtt.tbs.video.PLAY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

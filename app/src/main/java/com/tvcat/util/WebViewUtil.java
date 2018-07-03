@@ -1,6 +1,8 @@
 package com.tvcat.util;
 
 import android.os.Build;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -10,7 +12,7 @@ import android.webkit.WebView;
 
 public class WebViewUtil {
 
-    public void setWebView(WebView wv){
+    public void setWebView(WebView wv) {
         wv.getSettings().setJavaScriptEnabled(true);
 
         wv.getSettings().setSavePassword(false);
@@ -29,7 +31,8 @@ public class WebViewUtil {
         }
         wv = null;
     }
-    public void setWebView(com.tencent.smtt.sdk.WebView wv){
+
+    public void setWebView(com.tencent.smtt.sdk.WebView wv) {
         wv.getSettings().setJavaScriptEnabled(true);
 
         wv.getSettings().setSavePassword(false);
@@ -53,5 +56,40 @@ public class WebViewUtil {
 
         wv = null;
 
+    }
+
+    public void destroy(com.tencent.smtt.sdk.WebView wv) {
+
+
+        if (wv == null)
+            return;
+        ViewParent parent = wv.getParent();
+        if (parent != null) {
+            ((ViewGroup) parent).removeView(wv);
+        }
+        wv.stopLoading(); // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
+        wv.getSettings().setJavaScriptEnabled(false);
+        wv.clearHistory();
+        wv.clearView();
+        wv.removeAllViews();
+        wv.destroy();
+
+
+    }
+
+    public void destroy(WebView wv) {
+
+        if (wv == null)
+            return;
+        ViewParent parent = wv.getParent();
+        if (parent != null) {
+            ((ViewGroup) parent).removeView(wv);
+        }
+        wv.stopLoading(); // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
+        wv.getSettings().setJavaScriptEnabled(false);
+        wv.clearHistory();
+        wv.clearView();
+        wv.removeAllViews();
+        wv.destroy();
     }
 }
