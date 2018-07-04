@@ -99,13 +99,22 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
                 return true;
             }
 
+            @Override
+            public void onPageFinished(WebView webView, String s) {
+                super.onPageFinished(webView, s);
 
+
+            }
         });
 
         wv.loadUrl(url);
 
 
     }
+
+
+
+
 
     @Override
     protected void initEventAndData() {
@@ -147,13 +156,13 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
 
     @Override
     public void parseLook(LookHistParseBean lookHistParseBean) {
-        if(lookHistParseBean == null)
+        if (lookHistParseBean == null)
             return;
-        if(StringUtil.isNull(lookHistParseBean.getType()))
+        if (StringUtil.isNull(lookHistParseBean.getType()))
             return;
 
-        if(TextUtils.equals(lookHistParseBean.getType(),"url")){
-            VideoWebActivity.start(mContext,lookHistParseBean.getUrl(),lookHistParseBean.getTitle());
+        if (TextUtils.equals(lookHistParseBean.getType(), "url")) {
+            VideoWebActivity.start(mContext, lookHistParseBean.getUrl(), lookHistParseBean.getTitle());
         }
 
     }

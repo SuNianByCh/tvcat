@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -99,36 +100,58 @@ public class VideoWebActivity extends RxActivity {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 url = url.toLowerCase();
+              //  view.loadUrl(getClearAdDivJs(mContext));
+             //   view.loadUrl("javascript:hideAd();");
                 return super.shouldInterceptRequest(view, url);
                /* if (!url.contains("img.cdxzx-tech.com") && !hasAd(getApplicationContext(), url))
                     return super.shouldInterceptRequest(view, url);
                 else
                     return new WebResourceResponse(null, null, null);
 */
+
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
+                // 获取页面内容
+                view.loadUrl("javascript:window.java_obj.showSource("
+                        + "document.getElementsByTagName('html')[0].innerHTML);");
+
+
                 super.onPageFinished(view, url);
+                //  view.loadUrl(getClearAdDivJs(mContext));
+                //view.loadUrl("javascript:hideAd();");
 
             }
 
 
         });
-
+        wv.addJavascriptInterface(new InJavaScriptLocalObj(), "java_obj");
         String url = getIntent().getStringExtra("url");
-        if(url == null)
+        if (url == null)
             return;
         wv.loadUrl(url);
     }
 
+    public String getClearAdDivJs(Context context) {
+        String js = "javascript:function hideAd() {"
+                + "var obj = document.getElementsByTagName('img'); alert(obj.length);"
+                + "for(var i= 0;i<obj.length;i++){ obj[i].style.display='none';}"
+                + "for(var i= 0;i<obj.length;i++){ obj[i].remove();}"
+                + "}";
+
+
+        // String js = "var $el = $('a[id^=__a_z_]'); $el.hide();var vids = document.getElementsByTagName('video');vids.width=100%;";
+        return js;
+    }
+
     @Override
     protected void initEventAndData() {
-        StatusBarUtil.setColor(this, ContextCompat.getColor(mContext,R.color.main_color));
+        StatusBarUtil.setColor(this, ContextCompat.getColor(mContext, R.color.main_color));
         webViewUtil = new WebViewUtil();
         webViewUtil.setWebView(wv);
         String title = getIntent().getStringExtra("title");
-        setTitle(tvTitle,title,R.color.main_color);
+        setTitle(tvTitle, title, R.color.main_color);
     }
 
     @Override
@@ -237,6 +260,18 @@ public class VideoWebActivity extends RxActivity {
             }
         }
         return false;
+    }
+
+    public final class InJavaScriptLocalObj {
+        @JavascriptInterface
+        public void showSource(String html) {
+            System.out.println("====>html=" + html);
+        }
+
+        @JavascriptInterface
+        public void showDescription(String str) {
+            System.out.println("====>html=" + str);
+        }
     }
 
 }
