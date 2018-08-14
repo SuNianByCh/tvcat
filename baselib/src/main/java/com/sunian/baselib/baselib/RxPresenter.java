@@ -96,7 +96,7 @@ public class RxPresenter<T extends IBaseView> implements IBasePresenter<T> {
         mView.stateMain(type);
         if (throwable instanceof HttpException) {
             HttpException httpException = (HttpException) throwable;
-            mView.showErrorMsg(httpException.msg, type);
+            mView.showErrorMsg(httpException.msg, httpException.code);
         } else {
             mView.showErrorMsg("访问服务器出错", type);
         }

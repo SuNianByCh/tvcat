@@ -9,14 +9,11 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <View
             android:id="@+id/bg_header"
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:background="@color/main_color" />
-
-
         <ImageView
             android:id="@+id/iv_header"
             android:layout_width="40dp"
@@ -74,6 +71,7 @@
 
 
         <TextView
+            android:background="?android:selectableItemBackground"
             android:id="@+id/tv_history"
             style="@style/frg_my_text"
             android:drawableLeft="@mipmap/icon_history"
@@ -89,12 +87,13 @@
 
 
         <TextView
+            android:background="?android:selectableItemBackground"
             android:id="@+id/tv_get_vip"
             style="@style/frg_my_text"
             android:drawableLeft="@mipmap/icon_vip"
             android:text="领取VIP"
             app:layout_constraintTop_toBottomOf="@+id/tv_history"
-            tools:layout_editor_absoluteX="22dp" />
+          />
 
 
         <ImageView
@@ -111,23 +110,20 @@
             android:background="@color/line_color"
             app:layout_constraintTop_toBottomOf="@+id/tv_history" />
 
-
         <View
             android:id="@+id/v_1"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:background="@color/color_line"
             app:layout_constraintTop_toBottomOf="@+id/tv_get_vip" />
-
-
         <TextView
+            android:background="?android:selectableItemBackground"
             android:id="@+id/tv_online_service"
             style="@style/frg_my_text"
             android:drawableLeft="@mipmap/icon_kf"
             android:singleLine="true"
             android:text="在线客服（9:00 - 21:00 ）"
             app:layout_constraintTop_toBottomOf="@+id/v_1" />
-
 
         <ImageView
             style="@style/frg_my_iv"
@@ -137,13 +133,13 @@
 
 
         <TextView
+            android:background="?android:selectableItemBackground"
             android:id="@+id/tv_about_us"
             style="@style/frg_my_text"
             android:drawableLeft="@mipmap/icon_aboutus"
             android:singleLine="true"
             android:text="关于我们"
             app:layout_constraintTop_toBottomOf="@+id/tv_online_service" />
-
 
         <ImageView
             style="@style/frg_my_iv"
@@ -153,6 +149,7 @@
 
 
         <TextView
+            android:background="?android:selectableItemBackground"
             android:id="@+id/tv_question"
             style="@style/frg_my_text"
             android:drawableLeft="@mipmap/icon_faq"
@@ -192,6 +189,7 @@
 
 
         <TextView
+            android:background="?android:selectableItemBackground"
             android:id="@+id/tv_update"
             style="@style/frg_my_text"
             android:drawableLeft="@mipmap/icon_aboutus"
@@ -200,6 +198,7 @@
             app:layout_constraintTop_toBottomOf="@+id/v_2" />
 
         <TextView
+            android:background="?android:selectableItemBackground"
             android:id="@+id/tv_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -216,6 +215,7 @@
             app:layout_constraintTop_toTopOf="@id/tv_update" />
 
         <TextView
+            android:background="?android:selectableItemBackground"
             android:id="@+id/tv_clear"
             style="@style/frg_my_text"
             android:drawableLeft="@mipmap/icon_clean_cache"

@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sunian.baselib.util.StatusBarUtil;
 import com.tvcat.R;
-import com.tvcat.util.ActivityManager;
 import com.tvcat.util.DialogTip;
 import com.tvcat.util.HttpConstance;
 import com.tvcat.util.HttpModel;
@@ -48,8 +48,8 @@ public class VIPChargeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.fullScreen(this);
-        starSinkBar(getResources().getColor(R.color.main_color));
+
+        StatusBarUtil.setColor(this,getResources().getColor(R.color.main_color),0);
         setContentView(R.layout.activity_vipcharge);
         bind = ButterKnife.bind(this);
         initClick();
@@ -61,20 +61,15 @@ public class VIPChargeActivity extends AppCompatActivity {
         tvTitle.setText("新增VIP充值");
 
         btSure.setOnClickListener(v -> {
-
             if (etVipCode.getText() == null && etVipCode.getText().toString().trim().equals("")) {
                 Toast.makeText(this, "请输入VIP激活码", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             HashMap<String, String> map = new HashMap<>();
             map.put("token", RegisterBeanHelper.getToken());
             map.put("code", etVipCode.getText().toString());
-
             charge(map);
-
         });
-
     }
 
     @Override
@@ -87,10 +82,7 @@ public class VIPChargeActivity extends AppCompatActivity {
         super.onDestroy();//672299
     }
 
-
     void charge(HashMap<String, String> map) {
-
-
         showTIp();
         subscribe = HttpModel.getApiServer().postBackString(HttpConstance.HTTP_VIP_ACTIVE, map)
                 .subscribeOn(Schedulers.io())
@@ -106,8 +98,6 @@ public class VIPChargeActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(this, object.getString("message"), Toast.LENGTH_SHORT).show();
                             }
-
-
                         }
                         , throwable -> {
                             dismissTip();

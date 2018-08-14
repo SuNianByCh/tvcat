@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sunian.baselib.baselib.RxActivity;
@@ -45,6 +46,8 @@ public class VideoWebActivity extends RxActivity {
     ProgressBar pb;
     @BindView(R.id.wv)
     WebView wv;
+    @BindView(R.id.rl_head)
+    RelativeLayout rlHead;
     private WebViewUtil webViewUtil;
     private FullscreenHolder fullscreenContainer;
     private IX5WebChromeClient.CustomViewCallback customViewCallback;
@@ -77,16 +80,19 @@ public class VideoWebActivity extends RxActivity {
             @Override
             public void onShowCustomView(View view, IX5WebChromeClient.CustomViewCallback customViewCallback) {
                 //  super.onShowCustomView(view, customViewCallback);
+                rlHead.setVisibility(View.GONE);
                 showCustomView(view, customViewCallback);
             }
 
             @Override
             public void onHideCustomView() {
                 //super.onHideCustomView();
+
                 hideCustomView();
             }
 
         });
+
 
         wv.setWebViewClient(new WebViewClient() {
             @Override
@@ -100,14 +106,11 @@ public class VideoWebActivity extends RxActivity {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 url = url.toLowerCase();
-              //  view.loadUrl(getClearAdDivJs(mContext));
-             //   view.loadUrl("javascript:hideAd();");
-                return super.shouldInterceptRequest(view, url);
-               /* if (!url.contains("img.cdxzx-tech.com") && !hasAd(getApplicationContext(), url))
+                //return super.shouldInterceptRequest(view, url);
+                if (!url.contains("img.cdxzx-tech.com") && !hasAd(getApplicationContext(), url))
                     return super.shouldInterceptRequest(view, url);
                 else
                     return new WebResourceResponse(null, null, null);
-*/
 
             }
 
@@ -204,6 +207,15 @@ public class VideoWebActivity extends RxActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (rlHead.getVisibility() != View.VISIBLE) {
+            hideCustomView();
+        } else
+            super.onBackPressed();
+    }
+
     /**
      * 隐藏视频全屏
      */
@@ -211,7 +223,7 @@ public class VideoWebActivity extends RxActivity {
         if (customView == null) {
             return;
         }
-
+        rlHead.setVisibility(View.VISIBLE);
         //setStatusBarVisibility(true);
         FrameLayout decor = (FrameLayout) getWindow().getDecorView();
         decor.removeView(fullscreenContainer);

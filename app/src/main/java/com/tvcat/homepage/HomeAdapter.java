@@ -37,21 +37,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     @NonNull
     @Override
     public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-
         View view = layoutInflater.inflate(R.layout.item_home_page, parent, false);
-
-
         return new HomeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
-
-
         HomeBean homeBean = homeBeans.get(position);
-
-
         Glide.with(context).load(homeBean.getIcon()).into(holder.imageView);
         holder.textView.setText(homeBean.getName());
 
@@ -59,7 +51,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
             if (clickBack != null)
                 clickBack.callBack(position, homeBean);
         });
-
     }
 
     @Override

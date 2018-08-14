@@ -19,7 +19,7 @@ public class LookHistParseBean  {
     private String type;
     private String src_url;
     private String title;
-    private String success;
+    private int success;
     private String progress;
 
     public String getUrl() {
@@ -54,11 +54,11 @@ public class LookHistParseBean  {
         this.title = title;
     }
 
-    public String getSuccess() {
+    public int getSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(int success) {
         this.success = success;
     }
 

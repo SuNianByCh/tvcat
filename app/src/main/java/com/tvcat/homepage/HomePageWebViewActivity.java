@@ -39,17 +39,14 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
     com.tencent.smtt.sdk.WebView wv;
     @BindView(R.id.pb)
     ProgressBar pb;
-
     public String mpid = null;
     private String title;
     private String url;
-
-
+    private WebViewUtil webViewUtil;
     @Override
     public int getLayout() {
         return R.layout.activity_home_page_wv;
     }
-
     @Override
     protected void initPresenter() {
         super.initPresenter();
@@ -83,18 +80,17 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
         wv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
+/*
                 if (url.contains("http://m.iqiyi.com/v_") || url.contains("https://m.youku.com/video/id_")
                         || url.contains("http://m.le.com/vplay_")
                         || url.contains("https://m.mgtv.com/b/")
                         || url.contains("http://m.pptv.com/show/")
                         || url.contains("http://m.fun.tv/mplay/")
                         || url.contains("https://m.film.sohu.com/album/")
-                        || url.contains("http://m.v.qq.com/x/cover/")) {
-                    mPresenter.parsePlayUrl(url, mpid);
-
-                } else
-                    view.loadUrl(url);
+                        || url.contains("http://m.v.qq.com/x/cover/")) {*/
+             /*   } else
+                    view.loadUrl(url);*/
+                mPresenter.parsePlayUrl(url, mpid);
 
                 return true;
             }
@@ -113,12 +109,10 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
     }
 
 
-
-
-
     @Override
     protected void initEventAndData() {
-        new WebViewUtil().setWebView(wv);
+        webViewUtil = new WebViewUtil();
+        webViewUtil.setWebView(wv);
         StatusBarUtil.setColor(this, ContextCompat.getColor(getApplicationContext(), R.color.main_color));
         Intent intent = getIntent();
         title = intent.getStringExtra(TITLE);
@@ -133,7 +127,8 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
 
     @Override
     protected void onDestroy() {
-        new WebViewUtil().destroy(wv);
+        if (webViewUtil != null)
+            webViewUtil.destroy(wv);
         super.onDestroy();
     }
 
@@ -162,7 +157,10 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
             return;
 
         if (TextUtils.equals(lookHistParseBean.getType(), "url")) {
-            VideoWebActivity.start(mContext, lookHistParseBean.getUrl(), lookHistParseBean.getTitle());
+            if (lookHistParseBean.getSuccess() == 1)
+                VideoWebActivity.start(mContext, lookHistParseBean.getUrl(), lookHistParseBean.getTitle());
+            else
+                wv.loadUrl(lookHistParseBean.getUrl());
         }
 
     }

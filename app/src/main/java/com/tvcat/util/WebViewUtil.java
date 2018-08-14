@@ -19,7 +19,7 @@ public class WebViewUtil {
         wv.setVerticalScrollBarEnabled(false);
         wv.setHorizontalScrollBarEnabled(false);
 // 设置可以支持缩放
-        wv.getSettings().setSupportZoom(true);
+    //    wv.getSettings().setSupportZoom(true);
 // 扩大比例的缩放
         wv.getSettings().setUseWideViewPort(true);
 // 自适应屏幕
@@ -42,7 +42,7 @@ public class WebViewUtil {
         wv.getSettings().setSupportZoom(true);
 // 扩大比例的缩放
         wv.getSettings().setUseWideViewPort(true);
-        wv.getSettings().setBuiltInZoomControls(true);
+    //    wv.getSettings().setBuiltInZoomControls(true);
 // 自适应屏幕
         wv.getSettings().setLayoutAlgorithm(com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         wv.getSettings().setLoadWithOverviewMode(true);

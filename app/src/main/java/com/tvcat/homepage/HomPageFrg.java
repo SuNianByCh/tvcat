@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -35,19 +34,15 @@ import io.reactivex.disposables.Disposable;
 import okhttp3.FormBody;
 
 public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHomPageView<Object> {
-
     @BindView(R.id.rv)
     protected RecyclerView mRv;
     private String UUID;
-
     @BindView(R.id.banner)
     protected Banner mBanner;
     private HomeAdapter adapter;
 
-
     @Override
     protected void initPresenter() {
-
         mPresenter = new HomePresenter();
     }
 
@@ -56,17 +51,11 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
         return R.layout.frg_homepage;
     }
 
-
-
-
-
     @Override
     protected void initRefresh() {
         super.initRefresh();
         mSrl =  mView.findViewById(R.id.sml);
     }
-
-
     @Override
     protected void initListener() {
         super.initListener();
@@ -76,7 +65,6 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
         initUIID();
     }
 
-
     @Override
     protected void adjustView(Bundle savedInstanceState) {
         super.adjustView(savedInstanceState);
@@ -85,37 +73,21 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
         mRv.setLayoutManager(new GridLayoutManager(getContext(), 4));
         adapter = new HomeAdapter(getContext(), null);
         mRv.setAdapter(adapter);
-
-
-
-        int widthPixels = getResources().getDisplayMetrics().widthPixels;
-
-        float rate = widthPixels*1.0f/504;
-        float height = 1080/rate;
-
-        ViewGroup.LayoutParams layoutParams = mBanner.getLayoutParams();
-        layoutParams.height= (int) height;
-        mBanner.setLayoutParams(layoutParams);
         mBanner.setDelayTime(3000);
-
         adapter.setClickBack((postion, homeBean) -> startWebAcitvity(homeBean.getName(), homeBean.getUrl(), homeBean.getId() + ""));
     }
-
-
 
     @Override
     public void resultHomeBeanList(List<HomeBean> homeBeanList) {
         if (homeBeanList == null || homeBeanList.isEmpty())
             return;
         adapter.clearAndRefresh(homeBeanList);
-
     }
 
     @Override
     public void resultBannerList(List<BannerBean> bannerBeanList) {
         if (bannerBeanList == null || bannerBeanList.isEmpty())
             return;
-
         mBanner.stopAutoPlay();
         mBanner.setImages(bannerBeanList);
         mBanner.setImageLoader(new ImageLoader() {
@@ -139,11 +111,7 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
                 });
             }
         });
-
-
         mBanner.start();
-
-
     }
 
     @Override
@@ -159,21 +127,17 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
             mBanner.startAutoPlay();
     }
 
-
-
     @Override
     public void onResume() {
         super.onResume();
         mBanner.startAutoPlay();
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
         mBanner.stopAutoPlay();
     }
-
     void register() {
         if (UUID == null)
             UUID = DeviceUtil.getUUID(getContext());
@@ -193,15 +157,10 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
         map.put("i", l + "");
         map.put("ak", apki + l);
         map.put("osv", Build.VERSION.SDK_INT + "");
-
-
         mPresenter.httpRegister(map);
-
-
     }
 
     private void initUIID() {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !DeviceUtil.hasUUID(App.instance)) {
             Disposable subscribe = new RxPermissions(getActivity())
                     .request(Manifest.permission.READ_PHONE_STATE)
@@ -211,8 +170,6 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
                         } else {
                             UUID = DeviceUtil.getUUID(getContext());
                         }
-
-
                         mSrl.autoRefresh();
                     });
 
@@ -220,13 +177,7 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
             UUID = DeviceUtil.getDeviceId(getContext());
             mSrl.autoRefresh();
         }
-
-
     }
-
-
-
-
     private void startWebAcitvity(String title, String url, String mpID) {
         if (title == null || "".equals(title.trim()))
             return;
@@ -245,21 +196,14 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
             return;
         if (updateBean.getChangelog() == null)
             return;
-
-
         String version = updateBean.getVersion();
         if (version == null)
             return;
-
         version = version.replace(".", "").trim();
-
         if (!version.matches("[0-9]+"))
             return;
-
         int versionInt = Integer.parseInt(version);
-
         if (versionInt > DeviceUtil.getVersionCode()) {
-
             new DialogUpdate(getContext(), updateBean)
                     .setiClickBack((postion, s) -> {
                         if (s == null || "".equals(s.trim())) {
@@ -271,7 +215,6 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
                         getActivity().startService(service);
                     }).show();
         }
-
 
     }
 }
