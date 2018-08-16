@@ -27,9 +27,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     Unbinder mUnbinder;
     protected AppCompatActivity mContext;
 
+    protected  boolean isCanLoad = true;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(!isCanLoad)
+            return;
         ActivityManager.addActivity(this);
         onViewBeforeCreate();
         mContext = this;

@@ -4,16 +4,17 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+
 import com.sunian.baselib.baselib.RxActivity;
 import com.sunian.baselib.util.StatusBarUtil;
 import com.sunian.baselib.util.StringUtil;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 import com.tvcat.R;
 import com.tvcat.beans.LookHistParseBean;
 import com.tvcat.beans.LookHistoryBean;
@@ -36,17 +37,19 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.wv)
-    com.tencent.smtt.sdk.WebView wv;
+    WebView wv;
     @BindView(R.id.pb)
     ProgressBar pb;
     public String mpid = null;
     private String title;
     private String url;
     private WebViewUtil webViewUtil;
+
     @Override
     public int getLayout() {
         return R.layout.activity_home_page_wv;
     }
+
     @Override
     protected void initPresenter() {
         super.initPresenter();
@@ -71,36 +74,33 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
                     pb.setVisibility(View.VISIBLE);
                     pb.setProgress(newProgress);
                 }
-
             }
-
-
         });
 
         wv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-/*
-                if (url.contains("http://m.iqiyi.com/v_") || url.contains("https://m.youku.com/video/id_")
-                        || url.contains("http://m.le.com/vplay_")
-                        || url.contains("https://m.mgtv.com/b/")
-                        || url.contains("http://m.pptv.com/show/")
-                        || url.contains("http://m.fun.tv/mplay/")
-                        || url.contains("https://m.film.sohu.com/album/")
-                        || url.contains("http://m.v.qq.com/x/cover/")) {*/
-             /*   } else
-                    view.loadUrl(url);*/
-                mPresenter.parsePlayUrl(url, mpid);
+                if (url.startsWith("http://m.iqiyi.com/v_")
+                        || url.startsWith("https://m.iqiyi.com/v_")
+                        || url.startsWith("https://m.youku.com/video/id_")
+                        || url.startsWith("http://m.youku.com/video/id_")
+                        || url.startsWith("http://m.le.com/vplay_")
+                        || url.startsWith("https://m.le.com/vplay_")
+                        || url.startsWith("https://m.mgtv.com/b/")
+                        || url.startsWith("http://m.pptv.com/show/")
+                        || url.startsWith("http://m.fun.tv/mplay/")
+                        || url.startsWith("https://m.pptv.com/show/")
+                        || url.startsWith("https://m.fun.tv/mplay/")
+                        || url.startsWith("https://m.film.sohu.com/album/")
+                        || url.startsWith("http://m.v.qq.com/x/cover/")
+                        || url.startsWith("https://m.v.qq.com/x/cover/")) {
+                    mPresenter.parsePlayUrl(url, mpid);
+                } else
+                    view.loadUrl(url);
 
                 return true;
             }
 
-            @Override
-            public void onPageFinished(WebView webView, String s) {
-                super.onPageFinished(webView, s);
-
-
-            }
         });
 
         wv.loadUrl(url);
@@ -155,15 +155,7 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
             return;
         if (StringUtil.isNull(lookHistParseBean.getType()))
             return;
-
-        if (TextUtils.equals(lookHistParseBean.getType(), "url")) {
-            if (lookHistParseBean.getSuccess() == 1)
-                VideoWebActivity.start(mContext, lookHistParseBean.getUrl(), lookHistParseBean.getTitle());
-            else
-                wv.loadUrl(lookHistParseBean.getUrl());
-        }
-
+        VideoWebActivity.start(mContext, lookHistParseBean.getUrl(), lookHistParseBean.getTitle());
     }
-
 
 }

@@ -1,6 +1,7 @@
 package com.tvcat.videoplay;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -50,6 +51,18 @@ public class PlayVideoActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // 隐藏android系统的状态栏*/
         // 视频播放时开启屏幕常亮
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+    }
+
+
+    public static void start(Context context, String title, String videopath, String recodURL) {
+        if (context == null)
+            return;
+        Intent intent = new Intent(context, PlayVideoActivity.class);
+        intent.putExtra("title", title);
+        intent.putExtra("videopath",videopath);
+        intent.putExtra("recodURL",recodURL);
+        context.startActivity(intent);
 
     }
 

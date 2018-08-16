@@ -3,13 +3,20 @@ package com.tvcat.homepage;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -17,15 +24,20 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
+import com.sunian.baselib.app.AppConfig;
 import com.sunian.baselib.baselib.RxActivity;
+import com.sunian.baselib.util.LogUtil;
 import com.sunian.baselib.util.StatusBarUtil;
+
 import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
-import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+import com.tvcat.App;
+import com.tvcat.GsVideoPlayer;
 import com.tvcat.R;
 import com.tvcat.util.WebViewUtil;
+import com.tvcat.videoplay.PlayVideoActivity;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
@@ -40,8 +52,8 @@ public class VideoWebActivity extends RxActivity {
     TextView tvTitle;
     @BindView(R.id.tv_right)
     TextView tvRight;
-    @BindView(R.id.bt_fullScreen)
-    Button btFullScreen;
+    @BindView(R.id.fl_content)
+    FrameLayout mVideoContainer;
     @BindView(R.id.pb)
     ProgressBar pb;
     @BindView(R.id.wv)
@@ -49,10 +61,15 @@ public class VideoWebActivity extends RxActivity {
     @BindView(R.id.rl_head)
     RelativeLayout rlHead;
     private WebViewUtil webViewUtil;
-    private FullscreenHolder fullscreenContainer;
-    private IX5WebChromeClient.CustomViewCallback customViewCallback;
-    protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-    private View customView;
+    private WebChromeClient.CustomViewCallback mCallBack;
+
+
+    @Override
+    public void setContentView(View view) {
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        super.setContentView(view);
+    }
 
     @Override
     public int getLayout() {
@@ -61,7 +78,10 @@ public class VideoWebActivity extends RxActivity {
 
     @Override
     protected void initListener() {
-        backView(ivBack);
+        RxView.clicks(ivBack).throttleFirst(AppConfig.THROTTLE, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    onBackPressed();
+                });
         wv.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -78,17 +98,16 @@ public class VideoWebActivity extends RxActivity {
             }
 
             @Override
-            public void onShowCustomView(View view, IX5WebChromeClient.CustomViewCallback customViewCallback) {
-                //  super.onShowCustomView(view, customViewCallback);
+            public void onShowCustomView(View view, CustomViewCallback customViewCallback) {
                 rlHead.setVisibility(View.GONE);
                 showCustomView(view, customViewCallback);
+                super.onShowCustomView(view, customViewCallback);
             }
 
             @Override
             public void onHideCustomView() {
-                //super.onHideCustomView();
-
                 hideCustomView();
+                super.onHideCustomView();
             }
 
         });
@@ -107,6 +126,15 @@ public class VideoWebActivity extends RxActivity {
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 url = url.toLowerCase();
                 //return super.shouldInterceptRequest(view, url);
+
+                if(url.endsWith(".m3u8") || url.endsWith(".mp4")){
+                    finish();
+                    PlayVideoActivity.start(mContext,tvTitle.getText().toString(),url,null);
+                    return new WebResourceResponse(null, null, null);
+                }
+
+                LogUtil.i("http----->", url);
+
                 if (!url.contains("img.cdxzx-tech.com") && !hasAd(getApplicationContext(), url))
                     return super.shouldInterceptRequest(view, url);
                 else
@@ -119,11 +147,7 @@ public class VideoWebActivity extends RxActivity {
                 // 获取页面内容
                 view.loadUrl("javascript:window.java_obj.showSource("
                         + "document.getElementsByTagName('html')[0].innerHTML);");
-
-
                 super.onPageFinished(view, url);
-                //  view.loadUrl(getClearAdDivJs(mContext));
-                //view.loadUrl("javascript:hideAd();");
 
             }
 
@@ -136,17 +160,6 @@ public class VideoWebActivity extends RxActivity {
         wv.loadUrl(url);
     }
 
-    public String getClearAdDivJs(Context context) {
-        String js = "javascript:function hideAd() {"
-                + "var obj = document.getElementsByTagName('img'); alert(obj.length);"
-                + "for(var i= 0;i<obj.length;i++){ obj[i].style.display='none';}"
-                + "for(var i= 0;i<obj.length;i++){ obj[i].remove();}"
-                + "}";
-
-
-        // String js = "var $el = $('a[id^=__a_z_]'); $el.hide();var vids = document.getElementsByTagName('video');vids.width=100%;";
-        return js;
-    }
 
     @Override
     protected void initEventAndData() {
@@ -169,14 +182,6 @@ public class VideoWebActivity extends RxActivity {
         if (context == null || url == null)
             return;
 
-   /*     if(TbsVideo.canUseTbsPlayer(context)){
-
-            TbsVideo.openVideo(context,url);
-
-            return;
-        }
-
-*/
         Intent intent = new Intent(context, VideoWebActivity.class);
         intent.putExtra("url", url);
         intent.putExtra("title", title);
@@ -189,72 +194,55 @@ public class VideoWebActivity extends RxActivity {
     /**
      * 视频播放全屏
      **/
-    private void showCustomView(View view, IX5WebChromeClient.CustomViewCallback callback) {
-        // if a view already exists then immediately terminate the new one
-        if (customView != null) {
-            callback.onCustomViewHidden();
-            return;
-        }
-        getWindow().getDecorView();
-
-        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
-        fullscreenContainer = new FullscreenHolder(this);
-        fullscreenContainer.addView(view, COVER_SCREEN_PARAMS);
-        decor.addView(fullscreenContainer, COVER_SCREEN_PARAMS);
-        customView = view;
-        //setStatusBarVisibility(false);
-        customViewCallback = callback;
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    private void showCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+        fullScreen();
+        wv.setVisibility(View.GONE);
+        mVideoContainer.setVisibility(View.VISIBLE);
+        mVideoContainer.addView(view);
+        mCallBack = callback;
     }
 
 
     @Override
     public void onBackPressed() {
-        if (rlHead.getVisibility() != View.VISIBLE) {
-            hideCustomView();
-        } else
+        if (wv.canGoBack()) {
+            wv.goBack();
+        } else {
             super.onBackPressed();
+        }
     }
 
     /**
      * 隐藏视频全屏
      */
     private void hideCustomView() {
-        if (customView == null) {
-            return;
+        fullScreen();
+        if (mCallBack != null) {
+            mCallBack.onCustomViewHidden();
         }
-        rlHead.setVisibility(View.VISIBLE);
-        //setStatusBarVisibility(true);
-        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
-        decor.removeView(fullscreenContainer);
-        fullscreenContainer = null;
-        customView = null;
-        customViewCallback.onCustomViewHidden();
         wv.setVisibility(View.VISIBLE);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        mVideoContainer.removeAllViews();
+        mVideoContainer.setVisibility(View.GONE);
     }
 
-
-    /**
-     * 全屏容器界面
-     */
-    static class FullscreenHolder extends FrameLayout {
-
-        public FullscreenHolder(Context ctx) {
-            super(ctx);
-            setBackgroundColor(ctx.getResources().getColor(android.R.color.black));
-        }
-
-        @Override
-        public boolean onTouchEvent(MotionEvent evt) {
-            return true;
-        }
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
         wv.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        wv.saveState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        wv.restoreState(savedInstanceState);
+
     }
 
     @Override
@@ -285,5 +273,17 @@ public class VideoWebActivity extends RxActivity {
             System.out.println("====>html=" + str);
         }
     }
+
+
+    private void fullScreen() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            rlHead.setVisibility(View.GONE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            rlHead.setVisibility(View.VISIBLE);
+        }
+    }
+
 
 }
