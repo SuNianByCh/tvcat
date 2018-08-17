@@ -74,7 +74,7 @@
             android:background="?android:selectableItemBackground"
             android:id="@+id/tv_history"
             style="@style/frg_my_text"
-            android:drawableLeft="@mipmap/icon_history"
+            android:drawableLeft="@mipmap/record"
             android:drawableRight="@mipmap/wq_next"
             android:text="观看记录"
             app:layout_constraintTop_toBottomOf="@+id/bg_header" />
@@ -90,7 +90,7 @@
             android:background="?android:selectableItemBackground"
             android:id="@+id/tv_get_vip"
             style="@style/frg_my_text"
-            android:drawableLeft="@mipmap/icon_vip"
+            android:drawableLeft="@mipmap/vip"
             android:text="领取VIP"
             app:layout_constraintTop_toBottomOf="@+id/tv_history"
           />
@@ -120,7 +120,7 @@
             android:background="?android:selectableItemBackground"
             android:id="@+id/tv_online_service"
             style="@style/frg_my_text"
-            android:drawableLeft="@mipmap/icon_kf"
+            android:drawableLeft="@mipmap/onlie"
             android:singleLine="true"
             android:text="在线客服（9:00 - 21:00 ）"
             app:layout_constraintTop_toBottomOf="@+id/v_1" />
@@ -136,7 +136,7 @@
             android:background="?android:selectableItemBackground"
             android:id="@+id/tv_about_us"
             style="@style/frg_my_text"
-            android:drawableLeft="@mipmap/icon_aboutus"
+            android:drawableLeft="@mipmap/about"
             android:singleLine="true"
             android:text="关于我们"
             app:layout_constraintTop_toBottomOf="@+id/tv_online_service" />
@@ -152,7 +152,7 @@
             android:background="?android:selectableItemBackground"
             android:id="@+id/tv_question"
             style="@style/frg_my_text"
-            android:drawableLeft="@mipmap/icon_faq"
+            android:drawableLeft="@mipmap/qestion"
             android:singleLine="true"
             android:text="常见问题"
             app:layout_constraintTop_toBottomOf="@+id/tv_about_us" />
@@ -192,7 +192,7 @@
             android:background="?android:selectableItemBackground"
             android:id="@+id/tv_update"
             style="@style/frg_my_text"
-            android:drawableLeft="@mipmap/icon_aboutus"
+            android:drawableLeft="@mipmap/about"
             android:singleLine="true"
             android:text="检查更新"
             app:layout_constraintTop_toBottomOf="@+id/v_2" />
@@ -203,7 +203,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="60dp"
-            android:text="1.00"
+            android:text="--"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_update"
             app:layout_constraintRight_toRightOf="parent" />
 
@@ -218,7 +218,7 @@
             android:background="?android:selectableItemBackground"
             android:id="@+id/tv_clear"
             style="@style/frg_my_text"
-            android:drawableLeft="@mipmap/icon_clean_cache"
+            android:drawableLeft="@mipmap/clear"
             android:singleLine="true"
             android:text="清空缓存"
             app:layout_constraintTop_toBottomOf="@+id/tv_update" />

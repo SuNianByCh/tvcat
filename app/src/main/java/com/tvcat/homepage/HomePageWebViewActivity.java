@@ -93,7 +93,9 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
                         || url.startsWith("https://m.fun.tv/mplay/")
                         || url.startsWith("https://m.film.sohu.com/album/")
                         || url.startsWith("http://m.v.qq.com/x/cover/")
-                        || url.startsWith("https://m.v.qq.com/x/cover/")) {
+                        || url.startsWith("https://m.v.qq.com/x/cover/")
+                        || url.contains(".mp4")
+                        || url.contains(".m3u8")) {
                     mPresenter.parsePlayUrl(url, mpid);
                 } else
                     view.loadUrl(url);
@@ -155,7 +157,7 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
             return;
         if (StringUtil.isNull(lookHistParseBean.getType()))
             return;
-        VideoWebActivity.start(mContext, lookHistParseBean.getUrl(), lookHistParseBean.getTitle());
+        VideoWebActivity.start(mContext, lookHistParseBean.getUrl(), lookHistParseBean.getTitle(),lookHistParseBean.getSrc_url());
     }
 
 }

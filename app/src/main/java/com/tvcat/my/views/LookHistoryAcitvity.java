@@ -40,7 +40,7 @@ public class LookHistoryAcitvity extends RxActivity<LookHistoryPresenter, Object
 
     private HistoryAdapter adapter;
     private int page = 1;
-    private Disposable subscribe;
+
 
 
     @Override
@@ -121,30 +121,8 @@ public class LookHistoryAcitvity extends RxActivity<LookHistoryPresenter, Object
 
         if(lookHistParseBean == null)
             return;
-        if(StringUtil.isNull(lookHistParseBean.getType()))
-            return;
+        VideoWebActivity.start(mContext,lookHistParseBean.getUrl(),lookHistParseBean.getTitle(),lookHistParseBean.getSrc_url());
 
-        if(TextUtils.equals(lookHistParseBean.getType(),"url")){
-            VideoWebActivity.start(mContext,lookHistParseBean.getUrl(),lookHistParseBean.getTitle());
-        }
-
-
-      /*  if (jsonObject.getInt("code") == 0) {
-            JSONObject data = jsonObject
-                    .getJSONObject("data");
-            Log.e("-------", data + "****");
-            if ("h5mp4".equals(data.getString("type") + "")) {
-                Intent intent = new Intent(LookHistoryAcitvity.this, PlayVideoActivity.class);
-                intent.putExtra("videopath", data.getString("url"));
-                intent.putExtra("recodURL", lookHistoryBean.getSource_url());
-                intent.putExtra("title", lookHistoryBean.getTitle());
-                intent.putExtra("progress", ((int) data.getDouble("progress")));
-                startActivity(intent);
-            }
-
-        } else if (jsonObject.getInt("code") == 6008) {
-            startActivity(new Intent(LookHistoryAcitvity.this, VIPChargeActivity.class));
-        }*/
     }
 
     @Override

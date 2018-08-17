@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.sunian.baselib.baselib.RxFragment;
 import com.sunian.baselib.util.FastClick;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.tvcat.App;
 import com.tvcat.DialogUpdate;
 import com.tvcat.R;
@@ -94,8 +96,8 @@ public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView
                 return;
             startActivity(new Intent(getContext(), LookHistoryAcitvity.class));
         });
-        tvUpdate.setOnClickListener(v -> mPresenter.checkUpdate(true));
-
+     //   tvUpdate.setOnClickListener(v -> mPresenter.checkUpdate(true));
+        tvUpdate.setOnClickListener(v -> Beta.checkUpgrade());
 
         tvAboutUs.setOnClickListener(v -> {
             if (FastClick.isFastClick())

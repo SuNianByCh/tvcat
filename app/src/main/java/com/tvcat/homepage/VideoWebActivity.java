@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -35,7 +36,6 @@ import com.tvcat.App;
 import com.tvcat.GsVideoPlayer;
 import com.tvcat.R;
 import com.tvcat.util.WebViewUtil;
-import com.tvcat.videoplay.PlayVideoActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -62,6 +62,9 @@ public class VideoWebActivity extends RxActivity {
     RelativeLayout rlHead;
     private WebViewUtil webViewUtil;
     private WebChromeClient.CustomViewCallback mCallBack;
+    private String title;
+    private String recordUrl;
+    private boolean isOrignPlay;
 
 
     @Override
@@ -114,6 +117,9 @@ public class VideoWebActivity extends RxActivity {
 
 
         wv.setWebViewClient(new WebViewClient() {
+
+
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -126,14 +132,12 @@ public class VideoWebActivity extends RxActivity {
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 url = url.toLowerCase();
                 //return super.shouldInterceptRequest(view, url);
-
-                if(url.endsWith(".m3u8") || url.endsWith(".mp4")){
+                if((url.endsWith(".m3u8") || url.endsWith(".mp4")) && url.contains("url=")){
+                    isOrignPlay = true;
                     finish();
-                    PlayVideoActivity.start(mContext,tvTitle.getText().toString(),url,null);
+                    GsVideoPlayer.start(mContext,tvTitle.getText().toString(),url,recordUrl);
                     return new WebResourceResponse(null, null, null);
                 }
-
-                LogUtil.i("http----->", url);
 
                 if (!url.contains("img.cdxzx-tech.com") && !hasAd(getApplicationContext(), url))
                     return super.shouldInterceptRequest(view, url);
@@ -153,8 +157,11 @@ public class VideoWebActivity extends RxActivity {
 
 
         });
-        wv.addJavascriptInterface(new InJavaScriptLocalObj(), "java_obj");
-        String url = getIntent().getStringExtra("url");
+
+        Intent intent = getIntent();
+        String url = intent.getStringExtra("url");
+
+
         if (url == null)
             return;
         wv.loadUrl(url);
@@ -163,31 +170,40 @@ public class VideoWebActivity extends RxActivity {
 
     @Override
     protected void initEventAndData() {
-        StatusBarUtil.setColor(this, ContextCompat.getColor(mContext, R.color.main_color));
+        StatusBarUtil.setColor(this, Color.BLACK);
         webViewUtil = new WebViewUtil();
         webViewUtil.setWebView(wv);
-        String title = getIntent().getStringExtra("title");
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("title");
         setTitle(tvTitle, title, R.color.main_color);
+        this.title = title;
+        recordUrl = intent.getStringExtra("recordUrl");
     }
 
     @Override
     protected void onDestroy() {
+        if(!isOrignPlay){
+            new SaveProgresPresenter().saveProgress("",recordUrl,title);
+        }
+
+
         if (webViewUtil != null)
             webViewUtil.destroy(wv);
         super.onDestroy();
     }
 
 
-    public static void start(Context context, String url, String title) {
+    public static void start(Context context, String url, String title,String recordUrl) {
         if (context == null || url == null)
             return;
 
         Intent intent = new Intent(context, VideoWebActivity.class);
         intent.putExtra("url", url);
         intent.putExtra("title", title);
+        intent.putExtra("recordUrl",recordUrl);
         context.startActivity(intent);
-
         intent = null;
+        context = null;
     }
 
 
