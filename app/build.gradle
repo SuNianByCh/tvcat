@@ -8,8 +8,8 @@ android {
         applicationId "com.tvcat"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 109
-        versionName "1.0.9"
+        versionCode rootProject.ext.android.versionCode
+        versionName  rootProject.ext.android.versionName
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

@@ -3,11 +3,11 @@ ext {
     android = [
             compileSdkVersion: 27,
             buildToolsVersion: '25.0.0',
-            applicationId    : "com.sunian",
+            applicationId    : "com.tvcat",
             minSdkVersion    : 16,
             targetSdkVersion : 25,
-            versionCode      : 100,
-            versionName      : "V1.0.0"
+            versionCode      : 109,
+            versionName      : "v1.0.9"
     ]
 
     def dependVersion = [
