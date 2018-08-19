@@ -1,8 +1,8 @@
 package com.tvcat.my.presenter;
 
 import com.sunian.baselib.baselib.IBaseView;
-import com.tvcat.beans.LookHistParseBean;
-import com.tvcat.beans.LookHistoryBean;
+import com.sunian.baselib.beans.LookHistParseBean;
+import com.sunian.baselib.beans.LookHistoryBean;
 
 import java.util.List;
 

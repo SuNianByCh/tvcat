@@ -12,8 +12,8 @@ import com.sunian.baselib.baselib.ComePresenter;
 import com.sunian.baselib.baselib.RxFragment;
 import com.tvcat.App;
 import com.tvcat.R;
-import com.tvcat.beans.ConfigBean;
-import com.tvcat.util.HttpConstance;
+import com.sunian.baselib.beans.ConfigBean;
+import com.sunian.baselib.model.http.HttpConstance;
 import com.tvcat.util.WebViewUtil;
 
 import butterknife.BindView;
@@ -50,6 +50,7 @@ public class DiscoverFrg extends RxFragment<ComePresenter, ConfigBean> {
         wv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                ivBack.setVisibility(View.VISIBLE);
                 view.loadUrl(url);
                 return true;
             }
@@ -78,11 +79,15 @@ public class DiscoverFrg extends RxFragment<ComePresenter, ConfigBean> {
             loadUrl();
         }
 
+        ivBack.setVisibility(View.GONE);
         ivBack.setOnClickListener(v -> {
             if (wv == null)
                 return;
             if (wv.canGoBack())
                 wv.goBack();
+            if(!wv.canGoBack()){
+                ivBack.setVisibility(View.GONE);
+            }
         });
 
     }

@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.tvcat.beans.UpdateBean;
+import com.sunian.baselib.beans.UpdateBean;
 import com.tvcat.util.IClickBack;
 
 import java.util.List;

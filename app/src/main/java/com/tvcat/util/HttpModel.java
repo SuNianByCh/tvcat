@@ -2,6 +2,8 @@ package com.tvcat.util;
 
 import android.content.Context;
 
+import com.sunian.baselib.model.http.HttpConstance;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;

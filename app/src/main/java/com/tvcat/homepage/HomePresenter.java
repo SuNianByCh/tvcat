@@ -1,11 +1,11 @@
 package com.tvcat.homepage;
 
 import com.tvcat.UpdatePresenter;
-import com.tvcat.beans.BannerBean;
-import com.tvcat.beans.HomeBean;
-import com.tvcat.beans.RegisterBean;
-import com.tvcat.util.HttpConstance;
-import com.tvcat.util.RegisterBeanHelper;
+import com.sunian.baselib.beans.BannerBean;
+import com.sunian.baselib.beans.HomeBean;
+import com.sunian.baselib.beans.RegisterBean;
+import com.sunian.baselib.model.http.HttpConstance;
+import com.sunian.baselib.beans.RegisterBeanHelper;
 
 import java.util.HashMap;
 
@@ -24,6 +24,7 @@ public class HomePresenter extends UpdatePresenter<IHomPageView> {
                     .subscribe(registerBean -> {
                         mView.stateMain(0);
                         RegisterBeanHelper.init(registerBean);
+                        mView.registerSuccess();
                         getBanner();
                         getHomeListBean();
                         checkUpdate(false);

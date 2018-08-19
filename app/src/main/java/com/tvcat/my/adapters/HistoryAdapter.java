@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tvcat.R;
-import com.tvcat.beans.LookHistoryBean;
+import com.sunian.baselib.beans.LookHistoryBean;
 import com.tvcat.util.IClickBack;
 
 import java.util.ArrayList;

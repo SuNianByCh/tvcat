@@ -18,12 +18,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.tvcat.R;
-import com.tvcat.beans.VipChargeListBean;
+import com.sunian.baselib.beans.VipChargeListBean;
 import com.tvcat.my.adapters.VipHistoryAdapter;
 import com.tvcat.util.ActivityManager;
-import com.tvcat.util.HttpConstance;
+import com.sunian.baselib.model.http.HttpConstance;
 import com.tvcat.util.HttpModel;
-import com.tvcat.util.RegisterBeanHelper;
+import com.sunian.baselib.beans.RegisterBeanHelper;
 
 import org.json.JSONObject;
 

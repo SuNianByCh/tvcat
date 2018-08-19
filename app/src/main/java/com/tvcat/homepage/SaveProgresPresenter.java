@@ -1,8 +1,8 @@
 package com.tvcat.homepage;
 
 import com.sunian.baselib.baselib.RxPresenter;
-import com.tvcat.util.HttpConstance;
-import com.tvcat.util.RegisterBeanHelper;
+import com.sunian.baselib.model.http.HttpConstance;
+import com.sunian.baselib.beans.RegisterBeanHelper;
 
 import java.util.HashMap;
 

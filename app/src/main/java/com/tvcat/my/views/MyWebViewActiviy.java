@@ -23,6 +23,7 @@ public class MyWebViewActiviy extends RxActivity {
     public final static int type_online_serviece = 2;
     public final static int type_common_question = 3;
     public final static int type_ad = 4;
+    public static final  int type_saoma = 5;
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.tv_title)
@@ -99,6 +100,10 @@ public class MyWebViewActiviy extends RxActivity {
                 tvTitle.setText(intent.getStringExtra("title"));
                 wv.loadUrl(intent.getStringExtra("url"));
                 break;
+            case type_saoma:
+                tvTitle.setText("扫码下载");
+                wv.loadUrl(App.getConfigBean().getDownload_url());
+
         }
 
         new WebViewUtil().setWebView(wv);

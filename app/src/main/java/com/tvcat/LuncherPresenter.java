@@ -2,8 +2,8 @@ package com.tvcat;
 
 
 import com.sunian.baselib.baselib.RxPresenter;
-import com.tvcat.beans.ConfigBean;
-import com.tvcat.util.HttpConstance;
+import com.sunian.baselib.beans.ConfigBean;
+import com.sunian.baselib.model.http.HttpConstance;
 
 import io.reactivex.disposables.Disposable;
 

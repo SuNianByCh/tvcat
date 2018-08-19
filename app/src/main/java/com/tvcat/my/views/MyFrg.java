@@ -7,18 +7,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sunian.baselib.baselib.RxFragment;
+import com.sunian.baselib.beans.ConfigBean;
+import com.sunian.baselib.beans.MyInfos;
+import com.sunian.baselib.beans.UpdateBean;
+import com.sunian.baselib.util.DeviceUtil;
 import com.sunian.baselib.util.FastClick;
-import com.tencent.bugly.Bugly;
-import com.tencent.bugly.beta.Beta;
 import com.tvcat.App;
 import com.tvcat.DialogUpdate;
 import com.tvcat.R;
-import com.tvcat.beans.ConfigBean;
-import com.tvcat.beans.MyInfos;
-import com.tvcat.beans.UpdateBean;
-import com.tvcat.my.presenter.IMyView;
 import com.tvcat.my.adapters.MyFrgPresenter;
-import com.tvcat.util.DeviceUtil;
+import com.tvcat.my.presenter.IMyView;
 import com.tvcat.util.DownLoadService;
 import com.tvcat.util.TipUtil;
 
@@ -47,7 +45,8 @@ public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView
     TextView tvClear;
     @BindView(R.id.tv_id)
     TextView tvId;
-
+    @BindView(R.id.wq_next)
+    TextView tvSm;
     private int type;
 
     @Override
@@ -80,15 +79,15 @@ public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView
         tvVipLeft.setOnClickListener(v -> {
             if (FastClick.isFastClick())
                 return;
-           // startActivity(new Intent(getContext(), VIPChargeActivity.class));
-            startActivity(new Intent(mContext,VipChargeViewActivity.class));
+            // startActivity(new Intent(getContext(), VIPChargeActivity.class));
+            startActivity(new Intent(mContext, VipChargeViewActivity.class));
         });
 
         tvGetVip.setOnClickListener(v -> {
             if (FastClick.isFastClick())
                 return;
-         //   startActivity(new Intent(getContext(), VIPHistoryActivity.class));
-            startActivity(new Intent(mContext,VipChargeViewActivity.class));
+            //   startActivity(new Intent(getContext(), VIPHistoryActivity.class));
+            startActivity(new Intent(mContext, VipChargeViewActivity.class));
         });
 
         tvHistory.setOnClickListener(v -> {
@@ -96,8 +95,10 @@ public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView
                 return;
             startActivity(new Intent(getContext(), LookHistoryAcitvity.class));
         });
-     //   tvUpdate.setOnClickListener(v -> mPresenter.checkUpdate(true));
-        tvUpdate.setOnClickListener(v -> Beta.checkUpgrade());
+
+        tvUpdate.setOnClickListener(v -> mPresenter.checkUpdate(true));
+
+        //tvUpdate.setOnClickListener(v -> Beta.checkUpgrade());
 
         tvAboutUs.setOnClickListener(v -> {
             if (FastClick.isFastClick())
@@ -128,6 +129,15 @@ public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView
             Toast.makeText(getContext(), "缓存已清空", Toast.LENGTH_SHORT).show();
         });
 
+        tvSm.setOnClickListener(v -> {
+            if (FastClick.isFastClick())
+                return;
+            if (App.getConfigBean().getDownload_url() == null)
+                return;
+            Intent intent = new Intent(getContext(), MyWebViewActiviy.class);
+            intent.putExtra("type", MyWebViewActiviy.type_saoma);
+            startActivity(intent);
+        });
     }
 
 
@@ -135,7 +145,6 @@ public class MyFrg extends RxFragment<MyFrgPresenter, Object> implements IMyView
     public void resultInfos(MyInfos myInfos) {
         tvVipLeft.setText(myInfos.getLeft_days());
         tvId.setText("ID:" + myInfos.getId());
-
     }
 
 

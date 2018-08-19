@@ -2,9 +2,9 @@ package com.tvcat;
 
 import com.sunian.baselib.baselib.RxPresenter;
 import com.sunian.baselib.util.APKVersionCodeUtil;
-import com.tvcat.beans.UpdateBean;
-import com.tvcat.util.HttpConstance;
-import com.tvcat.util.RegisterBeanHelper;
+import com.sunian.baselib.beans.UpdateBean;
+import com.sunian.baselib.model.http.HttpConstance;
+import com.sunian.baselib.beans.RegisterBeanHelper;
 
 import io.reactivex.disposables.Disposable;
 

@@ -12,7 +12,7 @@ import android.view.WindowManager;
 
 import com.sunian.baselib.baselib.RxActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.tvcat.beans.ConfigBean;
+import com.sunian.baselib.beans.ConfigBean;
 import com.tvcat.util.CountUtil;
 
 public class LancherActivity extends RxActivity<LuncherPresenter, Object> implements ILauncherView<Object> {

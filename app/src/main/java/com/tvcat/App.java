@@ -1,25 +1,32 @@
 package com.tvcat;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.squareup.leakcanary.LeakCanary;
 import com.sunian.baselib.app.DataManger;
-import com.tencent.bugly.Bugly;
+import com.sunian.baselib.beans.ConfigBean;
+import com.sunian.baselib.model.http.SeesinPrenster;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
-import com.tvcat.beans.ConfigBean;
 import com.tvcat.util.HttpModel;
+
+import static android.content.ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN;
 
 public class App extends DefaultApplicationLike {
     public static Application instance;
     private static ConfigBean configBean;
+    private boolean isBackground;
 
     public App(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent) {
         super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);
@@ -39,9 +46,10 @@ public class App extends DefaultApplicationLike {
         super.onCreate();
         instance = getApplication();
         HttpModel.init(getApplication());
+
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-        Bugly.init(getApplication(), "ad55aae560", false);
+      // Bugly.init(getApplication(), "ad55aae560", false);
         DataManger.init(getApplication());
         // 置入一个不设防的VmPolicy（不设置的话 7.0以上一调用拍照功能就崩溃了）
         // 还有一种方式：manifest中加入provider然后修改intent代码
@@ -62,7 +70,8 @@ public class App extends DefaultApplicationLike {
         }
         // JPushInterface.setDebugMode(true);
         //  JPushInterface.init(getApplication());
-
+        listenForForeground();
+        listenForScreenTurningOff();
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -81,5 +90,99 @@ public class App extends DefaultApplicationLike {
     public void registerActivityLifecycleCallback(Application.ActivityLifecycleCallbacks callbacks) {
         getApplication().registerActivityLifecycleCallbacks(callbacks);
     }
+
+
+
+    private void listenForForeground() {
+        getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            //...
+            @Override
+            public void onActivityResumed(Activity activity) {
+                if (isBackground) {
+                    isBackground = false;
+                    notifyForeground();
+                }
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+            //...
+        });
+    }
+
+    private void listenForScreenTurningOff() {
+        IntentFilter screenStateFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        getApplication().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                isBackground = true;
+                notifyBackground();
+            }
+        }, screenStateFilter);
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (level == TRIM_MEMORY_UI_HIDDEN) {
+            isBackground = true;
+            notifyBackground();
+        }
+
+    }
+
+    private void notifyForeground() {
+        // This is where you can notify listeners, handle session tracking, etc
+        new SeesinPrenster().startSensein();
+    }
+
+    private void notifyBackground() {
+        // This is where you can notify listeners, handle session tracking, etc
+
+        new SeesinPrenster().endSensein();
+    }
+
+    public boolean isBackground() {
+        return isBackground;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

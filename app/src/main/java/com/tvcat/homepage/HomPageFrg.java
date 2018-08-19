@@ -12,15 +12,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.sunian.baselib.baselib.RxFragment;
+import com.sunian.baselib.beans.BannerBean;
+import com.sunian.baselib.beans.HomeBean;
+import com.sunian.baselib.beans.UpdateBean;
+import com.sunian.baselib.model.http.SeesinPrenster;
+import com.sunian.baselib.util.DeviceUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tvcat.App;
 import com.tvcat.DialogUpdate;
 import com.tvcat.R;
-import com.tvcat.beans.BannerBean;
-import com.tvcat.beans.HomeBean;
-import com.tvcat.beans.UpdateBean;
 import com.tvcat.my.views.MyWebViewActiviy;
-import com.tvcat.util.DeviceUtil;
 import com.tvcat.util.DownLoadService;
 import com.tvcat.util.MD5Util;
 import com.youth.banner.Banner;
@@ -33,7 +34,7 @@ import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 import okhttp3.FormBody;
 
-public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHomPageView<Object> {
+public class HomPageFrg extends RxFragment<HomePresenter, Object> implements IHomPageView<Object> {
     @BindView(R.id.rv)
     protected RecyclerView mRv;
     private String UUID;
@@ -54,8 +55,9 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
     @Override
     protected void initRefresh() {
         super.initRefresh();
-        mSrl =  mView.findViewById(R.id.sml);
+        mSrl = mView.findViewById(R.id.sml);
     }
+
     @Override
     protected void initListener() {
         super.initListener();
@@ -104,14 +106,23 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
                         return;
                     }
                     Intent intent = new Intent(getContext(), MyWebViewActiviy.class);
-                    intent.putExtra("type",MyWebViewActiviy.type_ad);
+                    intent.putExtra("type", MyWebViewActiviy.type_ad);
                     intent.putExtra("title", "广告");
                     intent.putExtra("url", bannerBean.getLink());
-                   startActivity(intent);
+                    startActivity(intent);
                 });
             }
         });
         mBanner.start();
+    }
+
+    @Override
+    public void registerSuccess() {
+
+        new RxPermissions(getActivity()).requestEach(Manifest.permission.ACCESS_COARSE_LOCATION
+                , Manifest.permission.ACCESS_FINE_LOCATION).subscribe(permission -> {
+            new SeesinPrenster().startSensein();
+        });
     }
 
     @Override
@@ -123,7 +134,7 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
     @Override
     protected void onUserVisible(boolean isFirstVisible) {
         super.onUserVisible(isFirstVisible);
-        if(!isFirstVisible)
+        if (!isFirstVisible)
             mBanner.startAutoPlay();
     }
 
@@ -138,6 +149,7 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
         super.onStop();
         mBanner.stopAutoPlay();
     }
+
     void register() {
         if (UUID == null)
             UUID = DeviceUtil.getUUID(getContext());
@@ -178,6 +190,7 @@ public class HomPageFrg extends RxFragment<HomePresenter,Object> implements IHom
             mSrl.autoRefresh();
         }
     }
+
     private void startWebAcitvity(String title, String url, String mpID) {
         if (title == null || "".equals(title.trim()))
             return;

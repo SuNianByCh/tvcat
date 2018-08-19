@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tvcat.R;
-import com.tvcat.beans.HomeBean;
+import com.sunian.baselib.beans.HomeBean;
 import com.tvcat.util.IClickBack;
 
 import java.util.ArrayList;

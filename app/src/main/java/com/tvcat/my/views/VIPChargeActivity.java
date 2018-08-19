@@ -14,9 +14,9 @@ import android.widget.Toast;
 import com.sunian.baselib.util.StatusBarUtil;
 import com.tvcat.R;
 import com.tvcat.util.DialogTip;
-import com.tvcat.util.HttpConstance;
+import com.sunian.baselib.model.http.HttpConstance;
 import com.tvcat.util.HttpModel;
-import com.tvcat.util.RegisterBeanHelper;
+import com.sunian.baselib.beans.RegisterBeanHelper;
 
 import org.json.JSONObject;
 

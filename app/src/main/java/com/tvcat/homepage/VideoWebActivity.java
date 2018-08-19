@@ -8,17 +8,13 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,11 +24,7 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.sunian.baselib.app.AppConfig;
 import com.sunian.baselib.baselib.RxActivity;
-import com.sunian.baselib.util.LogUtil;
 import com.sunian.baselib.util.StatusBarUtil;
-
-import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
-import com.tvcat.App;
 import com.tvcat.GsVideoPlayer;
 import com.tvcat.R;
 import com.tvcat.util.WebViewUtil;
@@ -66,13 +58,6 @@ public class VideoWebActivity extends RxActivity {
     private String recordUrl;
     private boolean isOrignPlay;
 
-
-    @Override
-    public void setContentView(View view) {
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        super.setContentView(view);
-    }
 
     @Override
     public int getLayout() {
@@ -119,7 +104,6 @@ public class VideoWebActivity extends RxActivity {
         wv.setWebViewClient(new WebViewClient() {
 
 
-
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -132,10 +116,14 @@ public class VideoWebActivity extends RxActivity {
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 url = url.toLowerCase();
                 //return super.shouldInterceptRequest(view, url);
-                if((url.endsWith(".m3u8") || url.endsWith(".mp4")) && url.contains("url=")){
+                if ((url.endsWith(".m3u8") || url.endsWith(".mp4")) && url.contains("url=")) {
+//                    if (title == null) {
+//                        title = view.getTitle();
+//                        tvTitle.setText(title);
+//                    }
                     isOrignPlay = true;
                     finish();
-                    GsVideoPlayer.start(mContext,tvTitle.getText().toString(),url,recordUrl);
+                    GsVideoPlayer.start(mContext, tvTitle.getText().toString(), url, recordUrl);
                     return new WebResourceResponse(null, null, null);
                 }
 
@@ -152,21 +140,18 @@ public class VideoWebActivity extends RxActivity {
                 view.loadUrl("javascript:window.java_obj.showSource("
                         + "document.getElementsByTagName('html')[0].innerHTML);");
                 super.onPageFinished(view, url);
-
+                if (title == null) {
+                    title = view.getTitle();
+                    tvTitle.setText(title);
+                }
             }
-
-
         });
-
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
-
-
         if (url == null)
             return;
         wv.loadUrl(url);
     }
-
 
     @Override
     protected void initEventAndData() {
@@ -182,8 +167,8 @@ public class VideoWebActivity extends RxActivity {
 
     @Override
     protected void onDestroy() {
-        if(!isOrignPlay){
-            new SaveProgresPresenter().saveProgress("",recordUrl,title);
+        if (!isOrignPlay) {
+            new SaveProgresPresenter().saveProgress("", recordUrl, title);
         }
 
 
@@ -193,14 +178,14 @@ public class VideoWebActivity extends RxActivity {
     }
 
 
-    public static void start(Context context, String url, String title,String recordUrl) {
+    public static void start(Context context, String url, String title, String recordUrl) {
         if (context == null || url == null)
             return;
 
         Intent intent = new Intent(context, VideoWebActivity.class);
         intent.putExtra("url", url);
         intent.putExtra("title", title);
-        intent.putExtra("recordUrl",recordUrl);
+        intent.putExtra("recordUrl", recordUrl);
         context.startActivity(intent);
         intent = null;
         context = null;
@@ -212,6 +197,7 @@ public class VideoWebActivity extends RxActivity {
      **/
     private void showCustomView(View view, WebChromeClient.CustomViewCallback callback) {
         fullScreen();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
         wv.setVisibility(View.GONE);
         mVideoContainer.setVisibility(View.VISIBLE);
         mVideoContainer.addView(view);
@@ -236,6 +222,8 @@ public class VideoWebActivity extends RxActivity {
         if (mCallBack != null) {
             mCallBack.onCustomViewHidden();
         }
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        ;//显示状态栏
         wv.setVisibility(View.VISIBLE);
         mVideoContainer.removeAllViews();
         mVideoContainer.setVisibility(View.GONE);

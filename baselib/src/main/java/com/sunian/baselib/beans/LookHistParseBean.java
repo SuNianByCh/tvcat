@@ -1,4 +1,4 @@
-package com.tvcat.beans;
+package com.sunian.baselib.beans;
 
 /**
  * Created by sunian on 2018/6/22.

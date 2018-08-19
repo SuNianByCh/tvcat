@@ -29,8 +29,8 @@ public class MainActivity extends RxActivity {
     @Override
     protected void initEventAndData() {
         StatusBarUtil.setColor(this, getResources().getColor(R.color.main_color), 0);
-        StatusBarUtil.setLightMode(this);
-        findViewById(R.id.fl_content).setPadding(0,StatusBarUtil.getStatusBarHeight(this),0,0);
+        /*StatusBarUtil.setLightMode(this);
+        findViewById(R.id.fl_content).setPadding(0,StatusBarUtil.getStatusBarHeight(this),0,0);*/
         int[][] states = new int[][]{
                 new int[]{-android.R.attr.state_checked},
                 new int[]{android.R.attr.state_checked}
@@ -45,6 +45,8 @@ public class MainActivity extends RxActivity {
         bottomNavigationView.setItemTextColor(csl);
 
         bottomNavigationView.setSelectedItemId(R.id.home_page);
+
+
         changFrg(homePage);
 
     }
@@ -67,6 +69,7 @@ public class MainActivity extends RxActivity {
             return true;
         });
     }
+
     public void changFrg(String cur) {
         if (cur == null)
             return;
@@ -142,6 +145,7 @@ public class MainActivity extends RxActivity {
             back();
         }
     }
+
     void back() {
 
         if (System.currentTimeMillis() - mTime < 2000) {

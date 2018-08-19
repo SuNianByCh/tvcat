@@ -2,10 +2,10 @@ package com.tvcat.my.adapters;
 
 import com.tvcat.LuncherPresenter;
 import com.tvcat.UpdatePresenter;
-import com.tvcat.beans.MyInfos;
+import com.sunian.baselib.beans.MyInfos;
 import com.tvcat.my.presenter.IMyView;
-import com.tvcat.util.HttpConstance;
-import com.tvcat.util.RegisterBeanHelper;
+import com.sunian.baselib.model.http.HttpConstance;
+import com.sunian.baselib.beans.RegisterBeanHelper;
 
 import io.reactivex.disposables.Disposable;
 

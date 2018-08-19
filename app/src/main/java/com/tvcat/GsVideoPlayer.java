@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
@@ -14,8 +14,6 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.sunian.baselib.baselib.RxActivity;
 import com.sunian.baselib.util.StatusBarUtil;
 import com.tvcat.homepage.SaveProgresPresenter;
-
-import java.util.Arrays;
 
 import butterknife.BindView;
 
@@ -48,10 +46,11 @@ public class GsVideoPlayer extends RxActivity {
         recodURL = intent.getStringExtra("recodURL");
         String videopath = intent.getStringExtra("videopath");
         title = getIntent().getStringExtra("title");
-        if(title == null){
+        if (title == null) {
             title = "";
         }
-        if (videopath.contains("=http:")) {
+        /*
+        if (videopath.contains("= http:")) {
             String[] split = videopath.split("=http:");
             if (split.length > 1)
                 videopath = "http:" + split[1];
@@ -67,7 +66,13 @@ public class GsVideoPlayer extends RxActivity {
             String[] split = videopath.split("= https:");
             if (split.length > 1)
                 videopath = "https:" + split[1];
+        }*/
+        String[] comps = videopath.split("url=");
+        if (comps.length > 1) {
+            videopath = comps[1];
         }
+        videoPlayer.setShrinkImageRes(R.mipmap.ic_small_screen);
+        videoPlayer.setEnlargeImageRes(R.mipmap.ic_full_screen);
         videoPlayer.setUp(videopath, false, title);
         init();
 
@@ -86,7 +91,6 @@ public class GsVideoPlayer extends RxActivity {
     }
 
 
-
     private void init() {
         //增加封面
         ImageView imageView = new ImageView(this);
@@ -96,24 +100,23 @@ public class GsVideoPlayer extends RxActivity {
         videoPlayer.getTitleTextView().setVisibility(View.VISIBLE);
         //设置返回键
         videoPlayer.getBackButton().setVisibility(View.VISIBLE);
+
+
+
         //设置旋转
         orientationUtils = new OrientationUtils(this, videoPlayer);
         //设置全屏按键功能,这是使用的是选择屏幕，而不是全屏
-        videoPlayer.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                orientationUtils.resolveByClick();
-            }
-        });
+        videoPlayer.getFullscreenButton().setOnClickListener(v ->{
+            orientationUtils.resolveByClick();
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); ;//显示状态栏
+        } );
+
+
+
         //是否可以滑动调整
         videoPlayer.setIsTouchWiget(true);
         //设置返回按键功能
-        videoPlayer.getBackButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        videoPlayer.getBackButton().setOnClickListener(v -> onBackPressed());
         videoPlayer.startPlayLogic();
     }
 
@@ -132,8 +135,8 @@ public class GsVideoPlayer extends RxActivity {
 
     @Override
     protected void onDestroy() {
-        if(videoPlayer != null){
-            new SaveProgresPresenter().saveProgress(videoPlayer.getCurrentPositionWhenPlaying()+"",recodURL,title);
+        if (videoPlayer != null) {
+            new SaveProgresPresenter().saveProgress(videoPlayer.getCurrentPositionWhenPlaying() + "", recodURL, title);
         }
 
 
@@ -148,6 +151,7 @@ public class GsVideoPlayer extends RxActivity {
         //先返回正常状态
         if (orientationUtils.getScreenType() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             videoPlayer.getFullscreenButton().performClick();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); ;//显示状态栏
             return;
         }
         //释放所有

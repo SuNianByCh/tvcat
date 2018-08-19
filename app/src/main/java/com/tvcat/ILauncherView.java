@@ -1,8 +1,7 @@
 package com.tvcat;
 
-import com.jakewharton.rxbinding2.view.RxView;
 import com.sunian.baselib.baselib.IBaseView;
-import com.tvcat.beans.ConfigBean;
+import com.sunian.baselib.beans.ConfigBean;
 
 public interface ILauncherView<T>  extends IBaseView<T> {
 

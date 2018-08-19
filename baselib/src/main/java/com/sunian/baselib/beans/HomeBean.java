@@ -1,4 +1,4 @@
-package com.tvcat.beans;
+package com.sunian.baselib.beans;
 
 public class HomeBean {
 

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tvcat.R;
-import com.tvcat.beans.VipChargeListBean;
+import com.sunian.baselib.beans.VipChargeListBean;
 
 import java.util.ArrayList;
 import java.util.List;

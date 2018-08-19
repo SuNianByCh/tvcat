@@ -14,8 +14,8 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.tvcat.R;
-import com.tvcat.util.HttpConstance;
-import com.tvcat.util.RegisterBeanHelper;
+import com.sunian.baselib.model.http.HttpConstance;
+import com.sunian.baselib.beans.RegisterBeanHelper;
 import com.tvcat.util.WebViewUtil;
 
 import java.util.concurrent.TimeUnit;

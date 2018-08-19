@@ -1,4 +1,4 @@
-package com.tvcat.beans;
+package com.sunian.baselib.beans;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ public class ConfigBean {
     private String aboutus_url;
     private String faq_url;
     private String ad_script;
+    private String download_url;
     private List<String> ad_blacklist;
 
     public String getExplore_url() {
@@ -66,5 +67,13 @@ public class ConfigBean {
 
     public void setAd_blacklist(List<String> ad_blacklist) {
         this.ad_blacklist = ad_blacklist;
+    }
+
+    public String getDownload_url() {
+        return download_url;
+    }
+
+    public void setDownload_url(String download_url) {
+        this.download_url = download_url;
     }
 }

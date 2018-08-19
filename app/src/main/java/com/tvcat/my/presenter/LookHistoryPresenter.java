@@ -1,10 +1,10 @@
 package com.tvcat.my.presenter;
 
 import com.sunian.baselib.baselib.RxPresenter;
-import com.tvcat.beans.LookHistParseBean;
-import com.tvcat.beans.LookHistoryBean;
-import com.tvcat.util.HttpConstance;
-import com.tvcat.util.RegisterBeanHelper;
+import com.sunian.baselib.beans.LookHistParseBean;
+import com.sunian.baselib.beans.LookHistoryBean;
+import com.sunian.baselib.model.http.HttpConstance;
+import com.sunian.baselib.beans.RegisterBeanHelper;
 
 import io.reactivex.disposables.Disposable;
 
@@ -35,7 +35,7 @@ public class LookHistoryPresenter extends RxPresenter<ILookHistoryView> {
             return;
         } else {
             String url = HttpConstance.HTTP_PLAYER + "?token=" + RegisterBeanHelper
-                    .getToken() + "&url=" + sourceUrl + "&mp_id=" + id;
+                    .getToken() + "&mp_id=" + id + "&url=" + sourceUrl ;
 
             if (subscribe != null && !subscribe.isDisposed())
                 subscribe.dispose();

@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
 
     <application
@@ -62,14 +64,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/path_file" />
         </provider>
+<!--
+        <receiver android:name="com.sunian.baselib.util.HomeKeyBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.CLOSE_SYSTEM_DIALOGS" />
+            </intent-filter>
+        </receiver>-->
 
-        <activity
-            android:name=".videoplay.PlayVideoActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".videoplay.GiraffePlayerActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".my.views.VipChargeViewActivity"
             android:screenOrientation="portrait" />
@@ -88,9 +89,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".GsVideoPlayer"
+        <activity
+            android:name=".GsVideoPlayer"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

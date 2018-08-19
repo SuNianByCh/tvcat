@@ -2,7 +2,6 @@ package com.tvcat.homepage;
 
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -16,8 +15,8 @@ import com.sunian.baselib.baselib.RxActivity;
 import com.sunian.baselib.util.StatusBarUtil;
 import com.sunian.baselib.util.StringUtil;
 import com.tvcat.R;
-import com.tvcat.beans.LookHistParseBean;
-import com.tvcat.beans.LookHistoryBean;
+import com.sunian.baselib.beans.LookHistParseBean;
+import com.sunian.baselib.beans.LookHistoryBean;
 import com.tvcat.my.presenter.ILookHistoryView;
 import com.tvcat.my.presenter.LookHistoryPresenter;
 import com.tvcat.my.views.VipChargeViewActivity;
@@ -74,36 +73,46 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
                     pb.setVisibility(View.VISIBLE);
                     pb.setProgress(newProgress);
                 }
+
             }
+
+
         });
 
         wv.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.startsWith("http://m.iqiyi.com/v_")
-                        || url.startsWith("https://m.iqiyi.com/v_")
-                        || url.startsWith("https://m.youku.com/video/id_")
-                        || url.startsWith("http://m.youku.com/video/id_")
-                        || url.startsWith("http://m.le.com/vplay_")
-                        || url.startsWith("https://m.le.com/vplay_")
-                        || url.startsWith("https://m.mgtv.com/b/")
-                        || url.startsWith("http://m.pptv.com/show/")
-                        || url.startsWith("http://m.fun.tv/mplay/")
-                        || url.startsWith("https://m.pptv.com/show/")
-                        || url.startsWith("https://m.fun.tv/mplay/")
-                        || url.startsWith("https://m.film.sohu.com/album/")
-                        || url.startsWith("http://m.v.qq.com/x/cover/")
-                        || url.startsWith("https://m.v.qq.com/x/cover/")
-                        || url.contains(".mp4")
-                        || url.contains(".m3u8")) {
-                    mPresenter.parsePlayUrl(url, mpid);
-                } else
-                    view.loadUrl(url);
+                                @Override
+                                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                                    if (url.startsWith("http://m.iqiyi.com/v_")
+                                            || url.startsWith("https://m.iqiyi.com/v_")
+                                            || url.startsWith("https://m.youku.com/video/id_")
+                                            || url.startsWith("http://m.youku.com/video/id_")
+                                            || url.startsWith("http://m.le.com/vplay_")
+                                            || url.startsWith("https://m.le.com/vplay_")
+                                            || url.startsWith("https://m.mgtv.com/b/")
+                                            || url.startsWith("http://m.pptv.com/show/")
+                                            || url.startsWith("http://m.fun.tv/mplay/")
+                                            || url.startsWith("https://m.pptv.com/show/")
+                                            || url.startsWith("https://m.fun.tv/mplay/")
+                                            || url.startsWith("https://m.film.sohu.com/album/")
+                                            || url.startsWith("http://m.v.qq.com/x/cover/")
+                                            || url.startsWith("https://m.v.qq.com/x/cover/")
+                                            || url.contains(".mp4")
+                                            || url.contains(".m3u8")) {
+                                        mPresenter.parsePlayUrl(url, mpid);
+                                        return true;
+                                    } /*else if (url.startsWith("http") || url.startsWith("https")){
+                                         view.loadUrl(url);
+                                    }*/
 
-                return true;
-            }
+                                    return false;
+                                }
 
-        });
+                                @Override
+                                public void onPageFinished(WebView view, String url) {
+                                    super.onPageFinished(view, url);
+                                }
+                            }
+        );
 
         wv.loadUrl(url);
 
@@ -157,7 +166,7 @@ public class HomePageWebViewActivity extends RxActivity<LookHistoryPresenter, Ob
             return;
         if (StringUtil.isNull(lookHistParseBean.getType()))
             return;
-        VideoWebActivity.start(mContext, lookHistParseBean.getUrl(), lookHistParseBean.getTitle(),lookHistParseBean.getSrc_url());
+        VideoWebActivity.start(mContext, lookHistParseBean.getUrl(), lookHistParseBean.getTitle(), lookHistParseBean.getSrc_url());
     }
 
 }
