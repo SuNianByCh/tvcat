@@ -52,13 +52,9 @@ public class TabLayoutUtil {
 
                     tabView.invalidate();
                 }
-
-
             } catch (Throwable throwable) {
 
             }
-
-
         });
 
     }

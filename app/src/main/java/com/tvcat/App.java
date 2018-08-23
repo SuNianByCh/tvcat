@@ -11,27 +11,26 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.squareup.leakcanary.LeakCanary;
 import com.sunian.baselib.app.DataManger;
 import com.sunian.baselib.beans.ConfigBean;
 import com.sunian.baselib.model.http.SeesinPrenster;
-import com.tencent.bugly.beta.Beta;
-import com.tencent.tinker.loader.app.DefaultApplicationLike;
+
 import com.tvcat.util.HttpModel;
 
 import static android.content.ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN;
 
-public class App extends DefaultApplicationLike {
+public class App extends MultiDexApplication {
     public static Application instance;
     private static ConfigBean configBean;
     private boolean isBackground;
 
-    public App(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent) {
+   /* public App(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent) {
         super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);
-    }
+    }*/
 
     public static ConfigBean getConfigBean() {
         return configBean;
@@ -45,13 +44,13 @@ public class App extends DefaultApplicationLike {
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = getApplication();
-        HttpModel.init(getApplication());
+        instance =this;
+        HttpModel.init(this);
 
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-        // Bugly.init(getApplication(), "ad55aae560", false);
-        DataManger.init(getApplication());
+        // Bugly.init(this, "ad55aae560", false);
+        DataManger.init(this);
         // 置入一个不设防的VmPolicy（不设置的话 7.0以上一调用拍照功能就崩溃了）
         // 还有一种方式：manifest中加入provider然后修改intent代码
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -59,43 +58,35 @@ public class App extends DefaultApplicationLike {
             StrictMode.setVmPolicy(builder.build());
         }
         // Normal app init code...
-        LeakCanary.install(getApplication());
+        LeakCanary.install(this);
         if (BuildConfig.DEBUG) {
 
         }
-        //  Stetho.initializeWithDefaults(getApplication());
-        if (LeakCanary.isInAnalyzerProcess(getApplication())) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
+        if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
-        }
-        // JPushInterface.setDebugMode(true);
-        //  JPushInterface.init(getApplication());
+        };
         listenForForeground();
         listenForScreenTurningOff();
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+/*    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+    }
+
     @Override
     public void onBaseContextAttached(Context base) {
-        super.onBaseContextAttached(base);
+      //  super.onBaseContextAttached(base);
         // you must install multiDex whatever tinker is installed!
         MultiDex.install(base);
-        ARouter.init(getApplication());
+      //  ARouter.init(this);
         // 安装tinker
         // TinkerManager.installTinker(this); 替换成下面Bugly提供的方法
-        Beta.installTinker(this);
-    }
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    public void registerActivityLifecycleCallback(Application.ActivityLifecycleCallbacks callbacks) {
-        getApplication().registerActivityLifecycleCallbacks(callbacks);
-    }
-
-
+      //  Beta.installTinker(this);
+    }*/
 
     private void listenForForeground() {
-        getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+        this.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Log.e("TVCat", activity.getClass().getSimpleName() + " created");
@@ -142,14 +133,14 @@ public class App extends DefaultApplicationLike {
 
     private void listenForScreenTurningOff() {
         IntentFilter screenStateFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        getApplication().registerReceiver(new BroadcastReceiver() {
+        this.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 isBackground = true;
                 notifyBackground();
             }
         }, screenStateFilter);
-        getApplication().registerReceiver(new BroadcastReceiver() {
+        this.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
