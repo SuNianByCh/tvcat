@@ -41,6 +41,7 @@ public class HomPageFrg extends RxFragment<HomePresenter, Object> implements IHo
     @BindView(R.id.banner)
     protected Banner mBanner;
     private HomeAdapter adapter;
+    private boolean hasSendSession = false;
 
     @Override
     protected void initPresenter() {
@@ -121,7 +122,11 @@ public class HomPageFrg extends RxFragment<HomePresenter, Object> implements IHo
 
         new RxPermissions(getActivity()).requestEach(Manifest.permission.ACCESS_COARSE_LOCATION
                 , Manifest.permission.ACCESS_FINE_LOCATION).subscribe(permission -> {
-            new SeesinPrenster().startSensein();
+            if (!hasSendSession) {
+                this.hasSendSession = true;
+                new SeesinPrenster().startSensein();
+            }
+
         });
     }
 

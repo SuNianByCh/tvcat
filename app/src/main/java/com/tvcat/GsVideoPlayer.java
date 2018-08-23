@@ -73,7 +73,7 @@ public class GsVideoPlayer extends RxActivity {
         }
         videoPlayer.setShrinkImageRes(R.mipmap.ic_small_screen);
         videoPlayer.setEnlargeImageRes(R.mipmap.ic_full_screen);
-        videoPlayer.setUp(videopath, false, title);
+        videoPlayer.setUp(videopath, true, title);
         init();
 
     }
