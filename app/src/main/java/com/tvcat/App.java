@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.squareup.leakcanary.LeakCanary;
@@ -49,7 +50,7 @@ public class App extends DefaultApplicationLike {
 
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-      // Bugly.init(getApplication(), "ad55aae560", false);
+        // Bugly.init(getApplication(), "ad55aae560", false);
         DataManger.init(getApplication());
         // 置入一个不设防的VmPolicy（不设置的话 7.0以上一调用拍照功能就崩溃了）
         // 还有一种方式：manifest中加入provider然后修改intent代码
@@ -97,12 +98,12 @@ public class App extends DefaultApplicationLike {
         getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
+                Log.e("TVCat", activity.getClass().getSimpleName() + " created");
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
-
+                Log.e("TVCat", activity.getClass().getSimpleName() + " started");
             }
 
             //...
@@ -112,26 +113,28 @@ public class App extends DefaultApplicationLike {
                     isBackground = false;
                     notifyForeground();
                 }
+
+                Log.e("TVCat", activity.getClass().getSimpleName() + " resumed");
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
-
+                Log.e("TVCat", activity.getClass().getSimpleName() + " paused");
             }
 
             @Override
             public void onActivityStopped(Activity activity) {
-
+                Log.e("TVCat", activity.getClass().getSimpleName() + " stopped");
             }
 
             @Override
             public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
+                Log.e("TVCat", activity.getClass().getSimpleName() + " save instance state");
             }
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-
+                Log.e("TVCat", activity.getClass().getSimpleName() + " destroyed");
             }
             //...
         });
@@ -146,6 +149,26 @@ public class App extends DefaultApplicationLike {
                 notifyBackground();
             }
         }, screenStateFilter);
+        getApplication().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String reason = intent.getStringExtra("reason");
+                Log.e("TVCat", reason);
+                if (reason != null) {
+                    if (reason.equals("homekey")) {
+                        // home pressed
+                        isBackground = true;
+                        notifyBackground();
+                    } else if (reason.equals("recentapps")) {
+                        // recentapps pressed
+//                        Log.e("TVCat", "recentapps pressed");
+                        isBackground = true;
+                        notifyBackground();
+                    }
+                }
+            }
+        }, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
     }
 
     @Override
@@ -173,16 +196,6 @@ public class App extends DefaultApplicationLike {
         return isBackground;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
